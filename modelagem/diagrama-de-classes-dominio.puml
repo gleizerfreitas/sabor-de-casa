@@ -1,0 +1,76 @@
+@startuml
+
+classDiagram
+direction TB
+
+class Categoria {
+  +UUID id
+  +String nome
+}
+
+class Prato {
+  +UUID id
+  +String nome
+  +String descricao
+  +Decimal preco
+  +String foto
+  +UUID categoriaId
+}
+
+class CardapioDiario {
+  +UUID id
+  +Date data
+  +StatusCardapio status
+  +DateTime publicadoEm
+}
+
+class ItemCardapioDiario {
+  +UUID id
+  +UUID cardapioDiarioId
+  +UUID pratoId
+  +Boolean disponivel
+}
+
+class ConfiguracaoSistema {
+  +UUID id
+  +String whatsapp
+  +String fusoHorario
+}
+
+class HorarioFuncionamento {
+  +UUID id
+  +DiaSemana diaSemana
+  +Boolean aberto
+  +Time horaAbertura
+  +Time horaEncerramento
+}
+
+class UsuarioAdministrativo {
+  +UUID id
+  +String email
+  +Boolean ativo
+}
+
+class ServicoAutenticacao {
+  +autenticar()
+  +encerrarSessao()
+  +verificarAutorizacao()
+}
+
+class ServicoPedido {
+  +validarHorario()
+  +validarDisponibilidade()
+  +calcularTotal()
+  +gerarMensagem()
+}
+
+Categoria "1" --> "0..*" Prato : classifica
+CardapioDiario "1" *-- "1..*" ItemCardapioDiario : contém
+Prato "1" --> "0..*" ItemCardapioDiario : referenciado por
+ConfiguracaoSistema "1" *-- "1..7" HorarioFuncionamento : define
+UsuarioAdministrativo ..> ServicoAutenticacao : utiliza
+ServicoPedido ..> CardapioDiario : consulta
+ServicoPedido ..> ItemCardapioDiario : valida
+ServicoPedido ..> Prato : consulta preço
+
+@enduml

@@ -1,0 +1,23 @@
+#Arquivo de modelo - precisa incluir especificadades da STACK quando estiver definida
+
+# Arquivos temporários
+*.tmp
+*.bak
+*~
+
+# Configurações locais de editores
+.vscode/
+
+# Variáveis de ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# Dependências e saídas de build
+node_modules/
+dist/
+build/
+coverage/
+
+# Logs
+*.log

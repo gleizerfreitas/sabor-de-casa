@@ -1,0 +1,72 @@
+@startuml
+left to right direction
+
+actor "Proprietária" as Proprietaria
+actor "Cliente" as Cliente
+
+rectangle "Sistema Web Sabor de Casa" {
+
+  package "Área Administrativa" {
+    usecase "Autenticar-se" as UC_Login
+    usecase "Encerrar sessão" as UC_Logout
+
+    usecase "Gerenciar categorias" as UC_Categorias
+    usecase "Gerenciar pratos" as UC_Pratos
+    usecase "Configurar funcionamento" as UC_Horarios
+    usecase "Configurar WhatsApp" as UC_WhatsApp
+    usecase "Preparar cardápio diário" as UC_Preparar
+    usecase "Publicar cardápio" as UC_Publicar
+    usecase "Alterar cardápio publicado" as UC_Alterar
+    usecase "Gerenciar disponibilidade" as UC_Disponibilidade
+    usecase "Consultar cardápios cadastrados" as UC_ConsultarAdmin
+  }
+
+  package "Área Pública" {
+    usecase "Consultar cardápio" as UC_Consultar
+    usecase "Consultar funcionamento" as UC_Funcionamento
+    usecase "Selecionar pratos e quantidades" as UC_Selecionar
+    usecase "Revisar pedido" as UC_Revisar
+    usecase "Gerar mensagem do pedido" as UC_Gerar
+    usecase "Abrir WhatsApp com mensagem" as UC_Encaminhar
+  }
+}
+
+Proprietaria --> UC_Login
+Proprietaria --> UC_Logout
+Proprietaria --> UC_Categorias
+Proprietaria --> UC_Pratos
+Proprietaria --> UC_Horarios
+Proprietaria --> UC_WhatsApp
+Proprietaria --> UC_Preparar
+Proprietaria --> UC_Publicar
+Proprietaria --> UC_Alterar
+Proprietaria --> UC_Disponibilidade
+Proprietaria --> UC_ConsultarAdmin
+
+Cliente --> UC_Consultar
+Cliente --> UC_Funcionamento
+Cliente --> UC_Selecionar
+Cliente --> UC_Revisar
+Cliente --> UC_Gerar
+Cliente --> UC_Encaminhar
+
+UC_Publicar ..> UC_Preparar : <<extend>>
+UC_Encaminhar ..> UC_Gerar : <<include>>
+UC_Gerar ..> UC_Revisar : <<include>>
+
+note right of UC_Login
+  Autenticação obrigatória
+  para operações administrativas.
+end note
+
+note bottom of UC_Consultar
+  A consulta pública não exige login.
+end note
+
+note bottom of UC_Encaminhar
+  O sistema abre o WhatsApp com
+  a mensagem preenchida.
+  O cliente ainda precisa enviá-la.
+end note
+
+@enduml

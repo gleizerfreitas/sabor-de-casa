@@ -1,0 +1,52 @@
+@startuml
+
+erDiagram
+    CATEGORIA ||--o{ PRATO : classifica
+    CARDAPIO_DIARIO ||--|{ ITEM_CARDAPIO_DIARIO : contem
+    PRATO ||--o{ ITEM_CARDAPIO_DIARIO : referencia
+    CONFIGURACAO_SISTEMA ||--|{ HORARIO_FUNCIONAMENTO : define
+
+    CATEGORIA {
+        uuid id PK
+        varchar nome
+    }
+
+    PRATO {
+        uuid id PK
+        varchar nome
+        text descricao
+        decimal preco
+        varchar foto
+        uuid categoria_id FK
+    }
+
+    CARDAPIO_DIARIO {
+        uuid id PK
+        date data UK
+        varchar status
+        timestamptz publicado_em
+    }
+
+    ITEM_CARDAPIO_DIARIO {
+        uuid id PK
+        uuid cardapio_diario_id FK
+        uuid prato_id FK
+        boolean disponivel
+    }
+
+    CONFIGURACAO_SISTEMA {
+        uuid id PK
+        varchar whatsapp
+        varchar fuso_horario
+    }
+
+    HORARIO_FUNCIONAMENTO {
+        uuid id PK
+        uuid configuracao_id FK
+        varchar dia_semana UK
+        boolean aberto
+        time hora_abertura
+        time hora_encerramento
+    }
+
+@enduml
