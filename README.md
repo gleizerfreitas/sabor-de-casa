@@ -20,11 +20,17 @@ do projeto Sabor de Casa.
 
 ## Estrutura do repositório
 
-- `docs/`: visão geral do projeto, atores do sitema, modelo conceitual do dominio, arquitetura. 
+- `app/`: rotas, páginas e layouts do Next.js (App Router).
+- `src/components/`: componentes reutilizáveis de interface.
+- `src/server/`: serviços e regras executados no servidor.
+- `src/lib/`: clientes e utilitários técnicos.
+- `src/validations/`: esquemas de validação de entrada.
+- `src/types/`: tipos compartilhados.
+- `supabase/`: migrações, seed e artefatos do banco.
+- `docs/`: visão geral do projeto, atores do sistema, modelo conceitual e arquitetura.
 - `modelagem/`: diagramas UML e modelos de dados.
-- `requisitos/`: histórias de usuário, requisitos funcionais, não funcionais, regras de negócio.
-- `testes/`: cenários de aceitação, planos e casos de teste documentados.
-- `src/`: código-fonte da aplicação.
+- `requisitos/`: histórias de usuário, requisitos funcionais, não funcionais e regras de negócio.
+- `testes/`: cenários de aceitação e casos de teste documentados.
 - `tests/`: testes automatizados.
 
 ## Escopo atual do MVP
@@ -39,10 +45,24 @@ histórico de alterações e múltiplos administradores permanecem fora do MVP.
 
 ## Desenvolvimento local
 
-Os comandos de instalação, configuração do Supabase local, variáveis de
-ambiente, migrações e execução da aplicação serão adicionados junto à
-fundação técnica. Nenhum segredo deve ser versionado; use um arquivo `.env.local`
-apenas na máquina de desenvolvimento.
+Instale as dependências e copie `.env.example` para `.env.local`, preenchendo
+as credenciais do projeto Supabase:
+
+```bash
+npm install
+npm run dev
+```
+
+Validações disponíveis:
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+```
+
+Nenhum segredo deve ser versionado; use `.env.local` apenas na máquina de
+desenvolvimento.
 
 ## Gestão de configuração
 
