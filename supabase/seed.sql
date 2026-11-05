@@ -1,0 +1,1 @@
+-- Dados iniciais serão adicionados junto às primeiras migrações do domínio.
