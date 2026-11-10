@@ -121,6 +121,16 @@ Critérios de aceitação:
 - A alteração do número deve ser aplicada aos encaminhamentos posteriores.
 - O número deve ser armazenado e utilizado em formato compatível com o link do WhatsApp, incluindo o código do país e o DDD, conforme necessário.
 
+### HU10A — Configurar nome da proprietária
+Como proprietária, quero informar meu nome nas configurações do sistema, para
+que a área administrativa possa utilizá-lo em saudações e identificações.
+
+Critérios de aceitação:
+- O sistema deve disponibilizar um campo para o nome da proprietária.
+- O nome deve ser obrigatório para salvar a configuração administrativa.
+- A proprietária deve conseguir alterar o nome quando necessário.
+- O nome configurado deve poder ser utilizado em saudações da área administrativa.
+
 ### HU11 — Consultar situação de funcionamento
 Como cliente, quero visualizar se a Sabor de Casa está recebendo pedidos, para saber se posso encaminhar minha solicitação naquele momento.
 
@@ -143,14 +153,17 @@ Como proprietária, quero criar o cardápio de uma data selecionando pratos do c
 
 Critérios de aceitação:
 - O sistema deve permitir selecionar uma data.
+- A data deve ser hoje ou uma data futura, informada no formato de calendário, considerando o fuso horário do estabelecimento.
 - O sistema deve apresentar os pratos cadastrados para seleção.
 - A proprietária deve poder selecionar vários pratos.
+- O cardápio deve ser salvo com status "rascunho" e o sistema deve informar o sucesso da operação.
 - O sistema deve impedir a inclusão duplicada do mesmo prato no mesmo cardápio diário.
 - O sistema deve permitir salvar o cardápio em preparação antes de publicá-lo.
 - Os pratos que não forem selecionados não devem aparecer no cardápio público daquela data.
 - O sistema deve permitir consultar e editar o cardápio antes da publicação.
 - A proprietária deve conseguir preparar cardápios para diferentes datas futuras.
 - O sistema deve impedir a criação de mais de um cardápio para a mesma data.
+- Ao editar um cardápio, a validação de unicidade deve desconsiderar o próprio cardápio e continuar impedindo conflito com outra data já cadastrada.
 
 ### HU13 — Publicar cardápio do dia
 Como proprietária, quero publicar o cardápio preparado para uma data, para disponibilizar aos clientes as opções que serão oferecidas naquele dia.
@@ -189,6 +202,8 @@ Critérios de aceitação:
 - A indisponibilidade deve afetar somente o item daquele cardápio diário.
 - A alteração não deve desativar o prato no catálogo permanente.
 - A alteração deve ser refletida nas consultas públicas posteriores.
+- A alteração deve ser executada automaticamente ao acionar o controle, sem uma etapa extra de confirmação.
+- Se a persistência falhar, a interface deve restaurar o estado anterior e exibir um alerta breve explicando que a atualização não foi concluída.
 
 ### HU16 — Reativar item do dia
 Como proprietária, quero reativar um item anteriormente marcado como indisponível, para voltar a aceitar pedidos quando ele estiver disponível.
@@ -199,6 +214,7 @@ Critérios de aceitação:
 - O preço deverá corresponder ao preço-base vigente do prato.
 - A alteração deve ser refletida nas consultas posteriores.
 - A reativação não deve modificar a disponibilidade do mesmo prato em outros cardápios diários.
+- A reativação deve usar o mesmo controle de disponibilidade e ser persistida automaticamente.
 
 ## Épico 5 — Consulta pública ao cardápio
 

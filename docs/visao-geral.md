@@ -67,12 +67,15 @@ Responsável pela configuração da operação da marmitaria e pela preparação
 Principais funcionalidades:
 
 - Configurar os dias e horários de funcionamento.
+- Configurar o nome da proprietária para identificação e saudações administrativas.
 - Cadastrar o número de WhatsApp utilizado para os pedidos.
 - Preparar cardápios para datas futuras.
 - Selecionar os pratos disponíveis em cada data.
 - Publicar cardápios antecipadamente.
 - Controlar a disponibilidade dos itens de cada cardápio.
 - Identificar itens esgotados ou indisponíveis.
+- Abrir, a partir do resumo do dia, uma tela exclusiva para alterar rapidamente a disponibilidade de cada prato do cardápio atual.
+- Salvar cada alteração automaticamente, sem confirmação adicional, e informar a proprietária com um alerta caso a atualização falhe.
 
 ### 4.3. Cardápio público e preparação de pedidos
 
@@ -83,6 +86,7 @@ Principais funcionalidades:
 - Consultar o cardápio de uma data.
 - Visualizar nomes, descrições, preços e fotografias dos pratos.
 - Identificar itens disponíveis e indisponíveis.
+- Manter os itens esgotados visíveis, com possibilidade de voltarem a ficar disponíveis.
 - Selecionar pratos e quantidades.
 - Visualizar o resumo do pedido.
 - Consultar o total estimado.

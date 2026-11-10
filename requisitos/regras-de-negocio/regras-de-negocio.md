@@ -131,3 +131,27 @@ O número de WhatsApp comercial deve ser validado no formato necessário para a 
 ## RN-33
 **Descrição:**
 Uma fotografia de prato somente poderá ser aceita quando atender aos critérios de formato, tamanho, dimensões mínimas e validação de conteúdo definidos na Especificação das fotografias.
+
+## RN-34
+**Descrição:**
+A configuração administrativa deve armazenar o nome da proprietária, que poderá
+ser utilizado em saudações e identificações da área administrativa.
+
+## RN-35
+**Descrição:**
+Devem existir configurações de funcionamento para os sete dias da semana. Cada
+dia deve indicar se está aberto e, quando aberto, possuir um horário de abertura
+e um horário de encerramento válidos.
+
+## RN-36
+**Descrição:**
+Cada dia aberto possui um único intervalo de funcionamento independente dos
+demais dias. Os horários iniciais sugeridos pela interface são 11:00 e 14:00,
+mas a proprietária pode editá-los.
+
+## RN-37
+**Descrição:**
+A disponibilidade de um item do cardápio diário deve ser alterada imediatamente
+ao acionar o respectivo controle e persistida sem confirmação adicional. Em caso
+de falha, o estado anterior deve ser restaurado e a proprietária deve receber um
+aviso explícito.

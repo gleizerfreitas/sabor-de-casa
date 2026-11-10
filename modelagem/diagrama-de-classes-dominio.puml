@@ -33,6 +33,7 @@ class ItemCardapioDiario {
 
 class ConfiguracaoSistema {
   +UUID id
+  +String nomeProprietaria
   +String whatsapp
   +String fusoHorario
 }
