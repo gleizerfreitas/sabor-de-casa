@@ -45,7 +45,7 @@ identifica o usuário; as políticas RLS autorizam as operações.
 ### PostgreSQL
 
 O banco persistirá categorias, pratos, cardápios diários, itens de cardápio,
-configuração global e horários de funcionamento. Integridade, unicidade e
+configuração global, nome da proprietária e horários de funcionamento. Integridade, unicidade e
 regras que possam ser expressas pelo banco devem ser garantidas por constraints
 e políticas RLS, além da validação da aplicação.
 

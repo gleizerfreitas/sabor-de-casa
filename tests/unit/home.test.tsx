@@ -9,7 +9,7 @@ describe("Página inicial", () => {
 
     expect(screen.getByText("Sabor de Casa")).toBeInTheDocument();
     expect(
-      screen.getByText("Cardápio feito com carinho"),
+      screen.getByText("Protótipos navegáveis do MVP"),
     ).toBeInTheDocument();
   });
 });
