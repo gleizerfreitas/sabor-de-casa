@@ -66,6 +66,13 @@ total estimado.
 
 - Rotas e mutações administrativas exigem sessão autenticada.
 - RLS impede escrita por clientes anônimos e usuários não autorizados.
+- A autenticação administrativa usa Supabase Auth com e-mail e senha, sessões
+  em cookies via `@supabase/ssr` e uma associação explícita em
+  `public.admin_profiles`.
+- O proxy protege a navegação das rotas finais; `requireAdmin()` valida sessão
+  e autorização antes de operações server-side.
+- O protótipo em `app/prototipo` permanece separado da aplicação final e não
+  participa da autenticação.
 - A área pública expõe somente cardápios publicados e os dados necessários à
   consulta.
 - A chave privada do Supabase só poderá ser usada no servidor.
