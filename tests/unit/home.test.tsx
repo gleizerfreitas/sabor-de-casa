@@ -4,12 +4,10 @@ import { describe, expect, it } from "vitest";
 import Home from "../../app/page";
 
 describe("Página inicial", () => {
-  it("apresenta a identidade do projeto", () => {
+  it("apresenta a área pública", () => {
     render(<Home />);
 
     expect(screen.getByText("Sabor de Casa")).toBeInTheDocument();
-    expect(
-      screen.getByText("Protótipos navegáveis do MVP"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Área pública")).toBeInTheDocument();
   });
 });
