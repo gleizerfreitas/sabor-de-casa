@@ -45,7 +45,9 @@ identifica o usuário; as políticas RLS autorizam as operações.
 ### PostgreSQL
 
 O banco persistirá categorias, pratos, cardápios diários, itens de cardápio,
-configuração global, nome da proprietária e horários de funcionamento. Integridade, unicidade e
+configuração global, nome da proprietária e horários de funcionamento. A
+configuração global possui uma linha para os dados administrativos e sete
+linhas filhas, uma para cada dia da semana. Integridade, unicidade e
 regras que possam ser expressas pelo banco devem ser garantidas por constraints
 e políticas RLS, além da validação da aplicação.
 
@@ -57,6 +59,8 @@ tamanho máximo de 1 MB e dimensões mínimas de 600 x 600 pixels.
 
 ### WhatsApp
 
+O número administrativo aceita somente celular brasileiro com DDD e é
+normalizado para o formato internacional sem máscara (`55` + DDD + número).
 O sistema não enviará nem persistirá pedidos. Após a revalidação de horário,
 disponibilidade e preço vigente, o navegador abrirá um link `wa.me` com uma
 mensagem codificada contendo data, itens, quantidades, preços, subtotais e
@@ -93,6 +97,7 @@ link for aberto. Essa limitação é explícita no MVP.
 ```text
 app/                 rotas, páginas e layouts Next.js
 src/components/      componentes de interface
+src/components/prototype/ componentes exclusivos do protótipo navegável
 src/lib/             clientes, serviços e regras técnicas
 src/validations/     esquemas de validação de entrada
 src/types/           tipos compartilhados e tipos do banco

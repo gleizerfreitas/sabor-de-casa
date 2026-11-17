@@ -46,6 +46,12 @@ class HorarioFuncionamento {
   +Time horaEncerramento
 }
 
+note right of HorarioFuncionamento
+  Um único intervalo por dia.
+  A configuração possui os
+  sete dias da semana.
+end note
+
 class UsuarioAdministrativo {
   +UUID id
   +String email

@@ -106,18 +106,25 @@ insert into public.admin_settings (
   id,
   owner_name,
   whatsapp,
-  timezone,
-  opening_time,
-  closing_time
+  timezone
 )
 values (
   '90909090-9090-9090-9090-909090909090',
   'Sabor de Casa',
-  '+55 83 99999-1234',
-  'America/Sao_Paulo',
-  '11:00:00',
-  '14:00:00'
+  '5583999991234',
+  'America/Sao_Paulo'
 );
+
+insert into public.admin_business_hours (
+  settings_id, day_of_week, is_open, opening_time, closing_time
+)
+select
+  '90909090-9090-9090-9090-909090909090',
+  day_of_week,
+  day_of_week in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday'),
+  case when day_of_week in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday') then '11:00:00'::time end,
+  case when day_of_week in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday') then '14:00:00'::time end
+from unnest(array['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) as days(day_of_week);
 
 -- A criação de um usuário admin real deve ocorrer no Supabase Auth.
 -- Após isso, insira o id do usuário na tabela public.admin_profiles.

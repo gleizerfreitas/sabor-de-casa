@@ -130,6 +130,7 @@ Critérios de aceitação:
 - O sistema deve utilizar o número configurado para gerar o link de encaminhamento ao WhatsApp.
 - A alteração do número deve ser aplicada aos encaminhamentos posteriores.
 - O número deve ser armazenado e utilizado em formato compatível com o link do WhatsApp, incluindo o código do país e o DDD, conforme necessário.
+- O sistema deve aceitar somente celulares brasileiros válidos com DDD e informar erro sem salvar quando o formato for inválido.
 
 ### HU10A — Configurar nome da proprietária
 Como proprietária, quero informar meu nome nas configurações do sistema, para
@@ -140,6 +141,7 @@ Critérios de aceitação:
 - O nome deve ser obrigatório para salvar a configuração administrativa.
 - A proprietária deve conseguir alterar o nome quando necessário.
 - O nome configurado deve poder ser utilizado em saudações da área administrativa.
+- Nome, WhatsApp e horários devem ser persistidos em uma única operação; em caso de falha, os valores anteriores devem permanecer.
 
 ### HU11 — Consultar situação de funcionamento
 Como cliente, quero visualizar se a Sabor de Casa está recebendo pedidos, para saber se posso encaminhar minha solicitação naquele momento.

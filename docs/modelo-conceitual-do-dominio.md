@@ -31,6 +31,11 @@ de cada dia poderão ser editados independentemente.
 
 O número de WhatsApp deverá ser configurado pela proprietária na área administrativa. A aplicação deverá validar o formato necessário para gerar o link de encaminhamento.
 
+A configuração é composta por uma única configuração administrativa e sete
+registros de horário, identificados pelos dias `monday` a `sunday`. Números de
+WhatsApp são armazenados normalizados, sem máscara, no formato brasileiro
+internacional.
+
 ## Categoria
 
 As categorias iniciais serão:

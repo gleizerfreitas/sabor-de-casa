@@ -22,6 +22,8 @@ do projeto Sabor de Casa.
 
 - `app/`: rotas, páginas e layouts do Next.js (App Router).
 - `src/components/`: componentes reutilizáveis de interface.
+- `src/components/prototype/`: componentes exclusivos do protótipo navegável,
+  sem persistência e sem uso pelas rotas reais.
 - `src/server/`: serviços e regras executados no servidor.
 - `src/lib/`: clientes e utilitários técnicos.
 - `src/validations/`: esquemas de validação de entrada.

@@ -44,7 +44,7 @@ erDiagram
     HORARIO_FUNCIONAMENTO {
         uuid id PK
         uuid configuracao_id FK
-        varchar dia_semana UK
+        varchar dia_semana
         boolean aberto
         time hora_abertura
         time hora_encerramento
