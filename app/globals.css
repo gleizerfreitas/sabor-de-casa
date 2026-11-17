@@ -17,3 +17,8 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
+
+a,
+button {
+  cursor: pointer;
+}
