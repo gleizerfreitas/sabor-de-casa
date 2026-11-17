@@ -155,3 +155,19 @@ A disponibilidade de um item do cardápio diário deve ser alterada imediatament
 ao acionar o respectivo controle e persistida sem confirmação adicional. Em caso
 de falha, o estado anterior deve ser restaurado e a proprietária deve receber um
 aviso explícito.
+
+## RN-38
+**Descrição:**
+Somente pratos ativos no catálogo permanente podem ser incluídos em novos cardápios diários.
+
+## RN-39
+**Descrição:**
+A desativação de um prato não deve removê-lo automaticamente dos cardápios diários aos quais ele já foi associado.
+
+## RN-40
+**Descrição:**
+Um prato inativo que já esteja associado a um cardápio deve permanecer visível nesse cardápio, respeitando a disponibilidade específica do item para a data.
+
+## RN-41
+**Descrição:**
+A reativação de um prato permite sua inclusão em novos cardápios diários, desde que as demais regras sejam atendidas.

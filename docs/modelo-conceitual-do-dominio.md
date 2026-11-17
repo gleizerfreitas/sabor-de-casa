@@ -69,6 +69,7 @@ O prato representa um produto cadastrado no catálogo permanente.
 | `preco` | Preço vigente do prato. |
 | `foto` | Referência à fotografia obrigatória. |
 | `categoria_id` | Identificador da categoria associada. |
+| `ativo` | Indica se o prato pode ser incluído em novos cardápios. |
 
 ### Regras
 
@@ -78,6 +79,11 @@ O prato representa um produto cadastrado no catálogo permanente.
 - O preço-base deve ser maior que zero.
 - A fotografia é obrigatória.
 - Cada prato deve pertencer a exatamente uma categoria cadastrada.
+- O prato deve ser cadastrado como ativo por padrão.
+- A proprietária pode ativar ou desativar o prato no catálogo permanente.
+- Pratos inativos não podem ser incluídos em novos cardápios diários.
+- A desativação não remove automaticamente associações existentes com cardápios.
+- Pratos inativos já associados permanecem nos cardápios e seguem a disponibilidade específica de cada item.
 - O preço-base representa o valor vigente do prato, sem desconto.
 - A alteração do preço-base deverá refletir-se nos cardápios que utilizam esse prato.
 - O preço pertence ao cadastro permanente do prato. O cardápio diário não terá um campo independente de preço no MVP. Assim, não haverá divergência entre preços antigos armazenados em cardápios e o preço vigente no catálogo.

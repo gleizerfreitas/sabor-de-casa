@@ -31,6 +31,10 @@ As mensagens de erro, indisponibilidade e encerramento do atendimento devem ser 
 **Descrição:** 
 Os preços devem ser apresentados em reais, com duas casas decimais.
 
+### RNF-24
+**Descrição:**
+A busca do catálogo deve permitir localizar pratos com poucas interações, atualizar os resultados sem recarregar a página e apresentar uma mensagem clara quando não houver correspondências.
+
 ## Segurança
 
 ### RNF-08

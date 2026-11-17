@@ -1,12 +1,19 @@
+import { Suspense } from "react";
+import { AdminCatalog } from "@/src/components/admin-catalog";
+import { createSupabaseServerClient } from "@/src/lib/supabase/server";
+import { listCatalog } from "@/src/server/services/catalog-service";
+import { connection } from "next/server";
+
+async function AdminCatalogContent() {
+  await connection();
+  const data = await listCatalog(await createSupabaseServerClient());
+  return <AdminCatalog data={data} />;
+}
+
 export default function AdminPage() {
   return (
-    <>
-      <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Área administrativa</p>
-      <h1 className="mt-2 text-3xl font-bold text-stone-900">Infraestrutura pronta</h1>
-      <p className="mt-3 max-w-2xl text-stone-600">
-        O login, a sessão, a autorização server-side e as políticas do banco
-        estão preparados para os próximos módulos do sistema.
-      </p>
-    </>
+    <Suspense fallback={<p className="rounded-2xl bg-white p-6 text-stone-600">Carregando catálogo...</p>}>
+      <AdminCatalogContent />
+    </Suspense>
   );
 }
