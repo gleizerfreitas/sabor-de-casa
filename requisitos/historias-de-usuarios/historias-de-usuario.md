@@ -69,6 +69,11 @@ Critérios de aceitação:
 - Cada prato deve exibir sua situação no catálogo, como ativo ou inativo.
 - A proprietária deve conseguir consultar a descrição e a fotografia.
 - O sistema deve permitir identificar um prato para edição ou inclusão em um cardápio diário.
+- O sistema deve disponibilizar um campo de busca rápida no catálogo.
+- A busca deve localizar pratos pelo nome, aceitando correspondência parcial.
+- A busca não deve diferenciar letras maiúsculas e minúsculas.
+- Os resultados devem ser atualizados enquanto a proprietária digita.
+- Quando nenhum prato corresponder à busca, o sistema deve informar claramente que nenhum prato foi encontrado.
 
 ### HU07 — Editar prato
 Como proprietária, quero editar as informações de um prato, para manter o catálogo atualizado.
