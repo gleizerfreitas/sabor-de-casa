@@ -57,6 +57,7 @@ Critérios de aceitação:
 - O sistema deve validar o conteúdo real do arquivo, e não apenas sua extensão.
 - O sistema deve validar os dados antes de concluir o cadastro.
 - O prato deve ficar disponível para inclusão em cardápios diários após o cadastro.
+- O prato deve ser cadastrado como ativo por padrão.
 - O cadastro não deve incluir automaticamente o prato no cardápio público.
 
 ### HU06 — Consultar catálogo de pratos
@@ -65,6 +66,7 @@ Como proprietária, quero consultar os pratos cadastrados, para localizar e admi
 Critérios de aceitação:
 - O sistema deve apresentar os pratos cadastrados.
 - Cada prato deve exibir nome, preço-base e categoria.
+- Cada prato deve exibir sua situação no catálogo, como ativo ou inativo.
 - A proprietária deve conseguir consultar a descrição e a fotografia.
 - O sistema deve permitir identificar um prato para edição ou inclusão em um cardápio diário.
 
@@ -73,6 +75,7 @@ Como proprietária, quero editar as informações de um prato, para manter o cat
 
 Critérios de aceitação:
 - O sistema deve permitir alterar nome, descrição, preço-base, fotografia e categoria.
+- O sistema deve permitir ativar ou desativar o prato no catálogo.
 - Os campos obrigatórios devem ser validados.
 - O preço-base deve ser maior que zero.
 - A categoria selecionada deve existir.
@@ -81,6 +84,8 @@ Critérios de aceitação:
 - O sistema deve validar o conteúdo real do arquivo, e não apenas sua extensão.
 - Após salvar, as informações atualizadas devem aparecer nas consultas pertinentes.
 - A alteração do preço-base deve ser refletida em todos os cardápios que utilizam o prato, inclusive aqueles já publicados.
+- Um prato desativado não deve ser apresentado para inclusão em novos cardápios.
+- A desativação não deve remover automaticamente o prato de cardápios aos quais ele já esteja associado.
 - O sistema não deve manter preços antigos associados aos itens dos cardápios diários.
 - Regra importante: se a proprietária alterar o preço de um prato de R$ 20,00 para R$ 22,00, todos os cardápios que utilizam esse prato deverão apresentar R$ 22,00. Não haverá preços independentes por data no MVP.
 
@@ -155,6 +160,7 @@ Critérios de aceitação:
 - O sistema deve permitir selecionar uma data.
 - A data deve ser hoje ou uma data futura, informada no formato de calendário, considerando o fuso horário do estabelecimento.
 - O sistema deve apresentar os pratos cadastrados para seleção.
+- O sistema deve apresentar para seleção somente os pratos ativos no catálogo.
 - A proprietária deve poder selecionar vários pratos.
 - O cardápio deve ser salvo com status "rascunho" e o sistema deve informar o sucesso da operação.
 - O sistema deve impedir a inclusão duplicada do mesmo prato no mesmo cardápio diário.

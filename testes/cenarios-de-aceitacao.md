@@ -26,6 +26,18 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** a proprietária alterar seu preço  
 **Então** todos os cardápios que utilizam esse prato deverão apresentar o novo preço.
 
+## CT04A — Inclusão somente de pratos ativos
+
+**Dado que** existem pratos ativos e inativos no catálogo
+**Quando** a proprietária preparar um novo cardápio
+**Então** somente os pratos ativos deverão ser apresentados para seleção.
+
+## CT04B — Desativação de prato já associado
+
+**Dado que** um prato está associado a um cardápio existente
+**Quando** a proprietária desativá-lo no catálogo
+**Então** o prato não deverá ser oferecido em novos cardápios, mas deverá permanecer no cardápio existente, respeitando sua disponibilidade para a data.
+
 ## CT05 — Prato esgotado após a seleção
 
 **Dado que** o cliente selecionou um prato disponível e a proprietária o marcou como indisponível  
@@ -66,6 +78,8 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT02 — Publicação antecipada | HU13 — Publicar cardápio do dia; HU11 — Consultar situação de funcionamento | RN-07, RN-25 |
 | CT03 — Categoria sem itens no dia | HU01 — Cadastrar categoria; HU18 — Visualizar cardápio do dia | RN-07, RN-16 |
 | CT04 — Atualização do preço | HU07 — Editar prato | RN-17, RN-18 |
+| CT04A — Inclusão somente de pratos ativos | HU07 — Editar prato; HU12 — Criar cardápio do dia | RN-38, RN-41 |
+| CT04B — Desativação de prato já associado | HU07 — Editar prato; HU14 — Alterar cardápio publicado | RN-39, RN-40 |
 | CT05 — Prato esgotado após a seleção | HU15 — Marcar item do dia como indisponível; HU19 — Consultar disponibilidade de um item; HU22 — Revisar pedido antes do encaminhamento | RN-11, RN-14, RN-15 |
 | CT06 — Encerramento do atendimento | HU11 — Consultar situação de funcionamento; HU24 — Encaminhar pedido pelo WhatsApp | RN-23, RN-26 |
 | CT07 — Geração da mensagem | HU23 — Gerar mensagem de pedido | RN-28 |
