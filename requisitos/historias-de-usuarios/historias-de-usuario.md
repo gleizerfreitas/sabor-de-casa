@@ -166,6 +166,7 @@ Como proprietária, quero criar o cardápio de uma data selecionando pratos do c
 Critérios de aceitação:
 - O sistema deve permitir selecionar uma data.
 - A data deve ser hoje ou uma data futura, informada no formato de calendário, considerando o fuso horário do estabelecimento.
+- A data deve corresponder a um dia da semana configurado como aberto na página de funcionamento.
 - O sistema deve apresentar os pratos cadastrados para seleção.
 - O sistema deve apresentar para seleção somente os pratos ativos no catálogo.
 - A proprietária deve poder selecionar vários pratos.
@@ -177,6 +178,7 @@ Critérios de aceitação:
 - A proprietária deve conseguir preparar cardápios para diferentes datas futuras.
 - O sistema deve impedir a criação de mais de um cardápio para a mesma data.
 - Ao editar um cardápio, a validação de unicidade deve desconsiderar o próprio cardápio e continuar impedindo conflito com outra data já cadastrada.
+- A validação do dia de funcionamento deve ocorrer tanto na interface quanto no servidor.
 
 ### HU13 — Publicar cardápio do dia
 Como proprietária, quero publicar o cardápio preparado para uma data, para disponibilizar aos clientes as opções que serão oferecidas naquele dia.

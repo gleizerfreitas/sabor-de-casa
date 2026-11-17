@@ -116,6 +116,22 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** a proprietária acessar a visão geral
 **Então** o sistema deverá visualizar uma seção com as datas, situações e quantidades de itens desses cardápios.
 
+## CT19 — Cardápio somente em dia aberto
+
+**Dado que** a terça-feira está configurada como fechada
+**Quando** a proprietária tentar criar ou agendar um cardápio para uma terça-feira
+**Então** o sistema deverá rejeitar a operação e informar que a data corresponde a um dia sem funcionamento.
+
+## CT20 — Ações de rascunho
+
+**Dado que** existe um cardápio em rascunho com itens selecionados
+**Quando** a proprietária consultar a lista de cardápios
+**Então** deverá visualizar as ações “Publicar” e “Excluir”.
+
+**Dado que** a proprietária tentar publicar um cardápio em rascunho sem itens
+**Quando** acionar “Publicar”
+**Então** o sistema deverá rejeitar a publicação.
+
 ## CT13 — Configuração administrativa
 
 **Dado que** a proprietária está autenticada
@@ -159,3 +175,5 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT16 — Entrada na visão geral administrativa | HU28 — Consultar visão geral administrativa | RN-43, RNF-25 |
 | CT17 — Acesso ao catálogo pela navegação | HU28 — Consultar visão geral administrativa; HU06 — Consultar catálogo de pratos | RN-43, RNF-25 |
 | CT18 — Resumo de cardápios futuros | HU28 — Consultar visão geral administrativa | RN-09, RN-43 |
+| CT19 — Cardápio somente em dia aberto | HU12 — Criar cardápio do dia | RN-23, RN-44 |
+| CT20 — Ações de rascunho | HU13 — Publicar cardápio do dia; HU17 — Consultar cardápios diários | RN-31 |

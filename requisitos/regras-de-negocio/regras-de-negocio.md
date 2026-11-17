@@ -187,3 +187,7 @@ A funcionalidade de gerenciar disponibilidade deve estar disponível somente par
 ## RN-43
 **Descrição:**
 Após a autenticação, a rota principal da área administrativa deve apresentar a visão geral da operação. O catálogo deve ser acessível por item próprio do menu ou sidebar e por atalho na visão geral.
+
+## RN-44
+**Descrição:**
+Um cardápio diário só pode ser criado ou agendado para uma data cujo dia da semana esteja configurado como aberto no funcionamento administrativo. A validação deve considerar a configuração persistida dos sete dias da semana.
