@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import type { Category, Dish } from "@/src/types/catalog";
 import type { DailyMenu } from "@/src/types/menu";
@@ -25,7 +25,8 @@ export function AdminMenuForm({
   openDays: BusinessDay[];
 }) {
   const pathname = usePathname();
-  return <AdminMenuFormState key={pathname} categories={categories} dishes={dishes} menu={menu} openDays={openDays} />;
+  const router = useRouter();
+  return <AdminMenuFormState key={pathname} categories={categories} dishes={dishes} menu={menu} openDays={openDays} onSaved={() => { router.replace("/admin/cardapios"); router.refresh(); }} />;
 }
 
 function AdminMenuFormState({
@@ -33,11 +34,13 @@ function AdminMenuFormState({
   dishes,
   menu,
   openDays,
+  onSaved,
 }: {
   categories: Category[];
   dishes: Dish[];
   menu?: DailyMenu;
   openDays: BusinessDay[];
+  onSaved: () => void;
 }) {
   const [date, setDate] = useState(menu?.menu_date ?? "");
   const [selectedDishIds, setSelectedDishIds] = useState<string[]>(menu?.items.map((item) => item.dish_id) ?? []);
@@ -90,7 +93,7 @@ function AdminMenuFormState({
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">Operação concluída</p>
         <h1 className="mt-2 text-3xl font-bold text-stone-900">Cardápio salvo com sucesso</h1>
         <p className="mt-3 text-stone-600">O cardápio foi salvo como rascunho e ainda não está disponível para os clientes.</p>
-        <Link href="/admin/cardapios" className="mt-6 inline-block rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">Voltar aos cardápios</Link>
+        <button type="button" onClick={onSaved} className="mt-6 rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">Voltar aos cardápios</button>
       </div>
     );
   }

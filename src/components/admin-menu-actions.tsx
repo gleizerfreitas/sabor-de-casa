@@ -3,7 +3,15 @@
 import { useState } from "react";
 import { publishMenu, removeMenu } from "@/src/app-actions/menu";
 
-export function AdminMenuActions({ id }: { id: string }) {
+export function AdminMenuActions({
+  id,
+  onPublished,
+  onRemoved,
+}: {
+  id: string;
+  onPublished: () => void;
+  onRemoved: () => void;
+}) {
   const [error, setError] = useState("");
   const [working, setWorking] = useState(false);
 
@@ -13,7 +21,7 @@ export function AdminMenuActions({ id }: { id: string }) {
     const result = await publishMenu(id);
     if (!result.ok) setError(result.error);
     setWorking(false);
-    if (result.ok) window.location.reload();
+    if (result.ok) onPublished();
   }
 
   async function remove() {
@@ -23,7 +31,7 @@ export function AdminMenuActions({ id }: { id: string }) {
     const result = await removeMenu(id);
     if (!result.ok) setError(result.error);
     setWorking(false);
-    if (result.ok) window.location.reload();
+    if (result.ok) onRemoved();
   }
 
   return (

@@ -18,7 +18,7 @@ export async function saveMenu(id: string | null, formData: FormData) {
     const input = dailyMenuSchema.parse({ date: formData.get("date"), dishIds });
     await saveDailyMenu(await createSupabaseServerClient(), id, input.date, input.dishIds);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios");
+    revalidatePath("/admin/cardapios", "page");
     revalidatePath(`/admin/cardapios/${id ?? ""}`);
     return { ok: true as const };
   } catch (error) {
@@ -31,7 +31,7 @@ export async function publishMenu(id: string) {
     await requireAdmin();
     await publishDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios");
+    revalidatePath("/admin/cardapios", "page");
     return { ok: true as const };
   } catch (error) {
     return fail(error);
@@ -43,7 +43,7 @@ export async function removeMenu(id: string) {
     await requireAdmin();
     await deleteDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios");
+    revalidatePath("/admin/cardapios", "page");
     return { ok: true as const };
   } catch (error) {
     return fail(error);
