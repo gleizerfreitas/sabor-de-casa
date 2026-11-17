@@ -126,7 +126,9 @@ Todo cardápio diário deverá possuir pelo menos um item do cardápio.
 
 ## RN-32
 **Descrição:**
-O número de WhatsApp comercial deve ser validado no formato necessário para a geração do link de encaminhamento das mensagens de pedido.
+O número de WhatsApp comercial deve ser um celular brasileiro válido com DDD,
+armazenado normalizado no formato internacional sem máscara (`55` + DDD +
+número), para a geração do link de encaminhamento das mensagens de pedido.
 
 ## RN-33
 **Descrição:**
@@ -148,6 +150,12 @@ e um horário de encerramento válidos.
 Cada dia aberto possui um único intervalo de funcionamento independente dos
 demais dias. Os horários iniciais sugeridos pela interface são 11:00 e 14:00,
 mas a proprietária pode editá-los.
+
+## RN-40
+**Descrição:**
+A configuração administrativa deve ser persistida atomicamente: nome,
+WhatsApp e os sete horários devem ser salvos juntos ou nenhum deles deve ser
+aplicado.
 
 ## RN-37
 **Descrição:**

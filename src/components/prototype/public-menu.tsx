@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { DishCard } from "@/src/components/dish-card";
+import { DishCard } from "@/src/components/prototype/dish-card";
 import {
   categories,
   dishes,

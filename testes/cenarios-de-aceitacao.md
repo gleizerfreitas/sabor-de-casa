@@ -86,6 +86,24 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** o cliente acionar o botão de encaminhamento  
 **Então** o WhatsApp deverá abrir com o destinatário configurado e a mensagem preenchida, sem que o sistema considere o pedido enviado ou confirmado.
 
+## CT13 — Configuração administrativa
+
+**Dado que** a proprietária está autenticada
+**Quando** informar nome, celular brasileiro, dias abertos e horários válidos
+**Então** o sistema deverá salvar a configuração e informar sucesso.
+
+**Dado que** um dia está aberto
+**Quando** o horário de encerramento não for posterior ao horário de abertura
+**Então** o sistema deverá rejeitar o salvamento e informar o erro.
+
+**Dado que** o número informado não é um celular brasileiro válido com DDD
+**Quando** a proprietária salvar a configuração
+**Então** o sistema deverá rejeitar o salvamento sem alterar os valores anteriores.
+
+**Dado que** a configuração foi salva com máscara
+**Quando** o sistema gerar o encaminhamento
+**Então** deverá utilizar o número normalizado no formato `https://wa.me/55...`.
+
 ## Rastreabilidade
 
 Os cenários validam fluxos integrados e complementam as histórias de usuário e regras de negócio relacionadas.
