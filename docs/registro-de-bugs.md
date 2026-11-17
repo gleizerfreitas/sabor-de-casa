@@ -1,0 +1,43 @@
+
+Página de Visão Geral 
+
+Painel de Destaque:
+1. formato da data deveria ser DD/MM/AAAA
+2. Quando o cardapio esta em preparação, deveria aparecer o botão de PUBLICAR.
+3. Quando o cardápio está publicado, deverá aparecer o botão de gerenciar disponibilidade.
+
+
+
+Página de Cardápios:
+
+1. BUG: Ao publicar um cardápio, a página está dando erro temporário:
+Capturar o Erro (REOSLVIDO)
+
+
+2. Feature do EXCLUIR: 
+
+- Não listar cardápios passados.
+- NNão disponiblizar a opção EXCLUIR para cardápios da lista
+- Informar que existem X cardapios passados e uma ação para exclui em lote.
+
+
+Feature
+
+1. 
+Menu / Sidebar
+A sidebar/menu, em resoluções menores, deveria vir retraida e ser acionada por botão (menu hamburguer)
+
+2. Pratos
+A funcionalidade EXCLUIR não foi implementada
+
+Bugs
+MINOR:
+
+Mensagem das configurações está esquisita: 
+[ { "code": "custom", "path": [ "hours", 4, "closingTime" ], "message": "O encerramento deve ser posterior à abertura." } ]
+E deveria aparecer abaixo dos campos de formulário que estão errados.
+E o campo ser focado, para correção
+
+
+DE FATO, as mensagens gerais estão sem padrão. Ora é em cima, ora em baixo, ta tudo meio bagunçado.
+Mas acho quea gente tem que avançar e depois vê isso
