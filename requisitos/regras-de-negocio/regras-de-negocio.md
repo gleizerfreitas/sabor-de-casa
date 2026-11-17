@@ -179,3 +179,11 @@ Um prato inativo que já esteja associado a um cardápio deve permanecer visíve
 ## RN-41
 **Descrição:**
 A reativação de um prato permite sua inclusão em novos cardápios diários, desde que as demais regras sejam atendidas.
+
+## RN-42
+**Descrição:**
+A funcionalidade de gerenciar disponibilidade deve estar disponível somente para o cardápio cuja data corresponda ao dia atual no fuso horário configurado para o estabelecimento. Cardápios de datas futuras ou passadas não devem exibir essa ação nem permitir seu acesso direto.
+
+## RN-43
+**Descrição:**
+Após a autenticação, a rota principal da área administrativa deve apresentar a visão geral da operação. O catálogo deve ser acessível por item próprio do menu ou sidebar e por atalho na visão geral.

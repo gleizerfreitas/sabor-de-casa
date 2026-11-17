@@ -7,6 +7,7 @@ import {
   AdminAuthorizationError,
   AuthenticationRequiredError,
 } from "@/src/server/auth/errors";
+import { AdminSidebar } from "@/src/components/admin-sidebar";
 
 export const instant = false;
 
@@ -37,7 +38,10 @@ export default async function ProtectedAdminLayout({
           <AdminLogoutButton />
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-5 py-12">{children}</main>
+      <main className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 lg:flex-row lg:py-12">
+        <AdminSidebar />
+        <section className="min-w-0 flex-1">{children}</section>
+      </main>
     </div>
   );
 }

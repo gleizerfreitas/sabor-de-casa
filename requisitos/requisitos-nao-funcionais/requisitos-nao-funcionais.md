@@ -35,6 +35,10 @@ Os preços devem ser apresentados em reais, com duas casas decimais.
 **Descrição:**
 A busca do catálogo deve permitir localizar pratos com poucas interações, atualizar os resultados sem recarregar a página e apresentar uma mensagem clara quando não houver correspondências.
 
+### RNF-25
+**Descrição:**
+As funcionalidades principais da área administrativa devem ser acessíveis por navegação persistente e por atalhos contextuais na visão geral, com comportamento adequado em dispositivos móveis.
+
 ## Segurança
 
 ### RNF-08

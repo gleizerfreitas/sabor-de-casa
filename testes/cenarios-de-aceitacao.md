@@ -86,6 +86,36 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** o cliente acionar o botão de encaminhamento  
 **Então** o WhatsApp deverá abrir com o destinatário configurado e a mensagem preenchida, sem que o sistema considere o pedido enviado ou confirmado.
 
+## CT14 — Disponibilidade somente para o cardápio do dia
+
+**Dado que** existem cardápios para hoje, amanhã e uma data passada
+**Quando** a proprietária consultar a lista de cardápios
+**Então** somente o cardápio de hoje deverá exibir a ação “Gerenciar disponibilidade”.
+
+## CT15 — Bloqueio de acesso direto à disponibilidade
+
+**Dado que** a proprietária possui um cardápio futuro ou passado
+**Quando** acessar diretamente a tela de disponibilidade desse cardápio
+**Então** o sistema deverá bloquear o acesso e informar que a disponibilidade só pode ser gerenciada para o cardápio do dia.
+
+## CT16 — Entrada na visão geral administrativa
+
+**Dado que** a proprietária está autenticada
+**Quando** acessar a rota principal da administração
+**Então** o sistema deverá apresentar a visão geral, sem os resumos de quantidade de pratos ativos, itens disponíveis hoje e próximo cardápio.
+
+## CT17 — Acesso ao catálogo pela navegação
+
+**Dado que** a proprietária está na visão geral
+**Quando** selecionar o catálogo no sidebar ou no atalho da visão geral
+**Então** o sistema deverá abrir a tela de catálogo.
+
+## CT18 — Resumo de cardápios futuros
+
+**Dado que** existem cardápios preparados para datas futuras
+**Quando** a proprietária acessar a visão geral
+**Então** o sistema deverá visualizar uma seção com as datas, situações e quantidades de itens desses cardápios.
+
 ## CT13 — Configuração administrativa
 
 **Dado que** a proprietária está autenticada
@@ -124,3 +154,8 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT07 — Geração da mensagem | HU23 — Gerar mensagem de pedido | RN-28 |
 | CT08 — Alteração de quantidade | HU21 — Selecionar pratos e quantidades; HU22 — Revisar pedido antes do encaminhamento; HU23 — Gerar mensagem de pedido | RN-28 |
 | CT09 — Encaminhamento pelo WhatsApp | HU24 — Encaminhar pedido pelo WhatsApp | RN-27, RN-29 |
+| CT14 — Disponibilidade somente para o cardápio do dia | HU15 — Marcar item do dia como indisponível; HU16 — Reativar item do dia | RN-42 |
+| CT15 — Bloqueio de acesso direto à disponibilidade | HU15 — Marcar item do dia como indisponível | RN-42, RNF-11 |
+| CT16 — Entrada na visão geral administrativa | HU28 — Consultar visão geral administrativa | RN-43, RNF-25 |
+| CT17 — Acesso ao catálogo pela navegação | HU28 — Consultar visão geral administrativa; HU06 — Consultar catálogo de pratos | RN-43, RNF-25 |
+| CT18 — Resumo de cardápios futuros | HU28 — Consultar visão geral administrativa | RN-09, RN-43 |

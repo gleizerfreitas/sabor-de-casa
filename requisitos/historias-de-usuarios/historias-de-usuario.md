@@ -229,6 +229,10 @@ Critérios de aceitação:
 - A reativação não deve modificar a disponibilidade do mesmo prato em outros cardápios diários.
 - A reativação deve usar o mesmo controle de disponibilidade e ser persistida automaticamente.
 
+Observação adicional para HU15 e HU16:
+- O gerenciamento de disponibilidade só deve ser acessível para o cardápio do dia, considerando o fuso horário configurado para o estabelecimento.
+- Cardápios futuros ou passados não devem exibir a ação nem aceitar acesso direto à tela de disponibilidade.
+
 ## Épico 5 — Consulta pública ao cardápio
 
 ### HU17 — Consultar cardápios diários
@@ -240,6 +244,20 @@ Critérios de aceitação:
 - A consulta deve apresentar os itens selecionados e suas disponibilidades.
 - A consulta deve permitir acessar um cardápio para edição.
 - O sistema não deve permitir mais de um cardápio para a mesma data.
+
+### HU28 — Consultar visão geral administrativa
+Como proprietária, quero visualizar um resumo da operação ao entrar na área administrativa, para identificar rapidamente a situação do cardápio atual e acessar as principais ações.
+
+Critérios de aceitação:
+- A rota principal da área administrativa deve apresentar a visão geral, e não o catálogo.
+- A visão geral deve exibir uma saudação usando o nome configurado da proprietária, quando disponível.
+- A visão geral deve exibir a situação do cardápio do dia.
+- A visão geral deve permitir acessar o cardápio do dia e gerenciar sua disponibilidade quando esse cardápio existir.
+- A visão geral deve informar quando não existe cardápio para hoje.
+- A visão geral deve oferecer atalho para criar um cardápio e consultar todos os cardápios.
+- A visão geral deve apresentar uma seção com os cardápios futuros preparados, suas datas, situações e quantidade de itens selecionados.
+- O catálogo deve ser acessível pelo menu ou sidebar e por atalho na visão geral.
+- A visão geral deve ser protegida pela autenticação administrativa.
 
 ### HU18 — Visualizar cardápio do dia
 Como cliente, quero acessar o cardápio da Sabor de Casa por um endereço público, para conhecer os pratos oferecidos na data.
