@@ -86,6 +86,78 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** o cliente acionar o botão de encaminhamento  
 **Então** o WhatsApp deverá abrir com o destinatário configurado e a mensagem preenchida, sem que o sistema considere o pedido enviado ou confirmado.
 
+## CT14 — Disponibilidade somente para o cardápio do dia
+
+**Dado que** existem cardápios para hoje, amanhã e uma data passada
+**Quando** a proprietária consultar a lista de cardápios
+**Então** somente o cardápio de hoje deverá exibir a ação “Gerenciar disponibilidade”.
+
+## CT15 — Bloqueio de acesso direto à disponibilidade
+
+**Dado que** a proprietária possui um cardápio futuro ou passado
+**Quando** acessar diretamente a tela de disponibilidade desse cardápio
+**Então** o sistema deverá bloquear o acesso e informar que a disponibilidade só pode ser gerenciada para o cardápio do dia.
+
+## CT16 — Entrada na visão geral administrativa
+
+**Dado que** a proprietária está autenticada
+**Quando** acessar a rota principal da administração
+**Então** o sistema deverá apresentar a visão geral, sem os resumos de quantidade de pratos ativos, itens disponíveis hoje e próximo cardápio.
+
+## CT17 — Acesso ao catálogo pela navegação
+
+**Dado que** a proprietária está na visão geral
+**Quando** selecionar o catálogo no sidebar ou no atalho da visão geral
+**Então** o sistema deverá abrir a tela de catálogo.
+
+## CT18 — Resumo de cardápios futuros
+
+**Dado que** existem cardápios preparados para datas futuras
+**Quando** a proprietária acessar a visão geral
+**Então** o sistema deverá visualizar uma seção com as datas, situações e quantidades de itens desses cardápios.
+
+## CT19 — Cardápio somente em dia aberto
+
+**Dado que** a terça-feira está configurada como fechada
+**Quando** a proprietária tentar criar ou agendar um cardápio para uma terça-feira
+**Então** o sistema deverá rejeitar a operação e informar que a data corresponde a um dia sem funcionamento.
+
+## CT20 — Ações de rascunho
+
+**Dado que** existe um cardápio em rascunho com itens selecionados
+**Quando** a proprietária consultar a lista de cardápios
+**Então** deverá visualizar as ações “Publicar” e “Excluir”.
+
+**Dado que** a proprietária tentar publicar um cardápio em rascunho sem itens
+**Quando** acionar “Publicar”
+**Então** o sistema deverá rejeitar a publicação.
+
+## CT21 — Exclusão em lote de cardápios passados
+
+**Dado que** existem cardápios com data anterior ao dia atual
+**Quando** a proprietária consultar a listagem
+**Então** esses cardápios não deverão aparecer na listagem principal e deverão ser informados em painel separado.
+
+**Dado que** o painel informa cardápios passados
+**Quando** a proprietária confirmar a exclusão em lote
+**Então** todos os cardápios anteriores deverão ser excluídos e o painel deverá deixar de contá-los.
+
+## CT22 — Exclusão individual de cardápios ativos
+
+**Dado que** existe um cardápio em rascunho ou publicado cuja data seja hoje ou futura
+**Quando** a proprietária confirmar a exclusão
+**Então** o cardápio deverá ser removido da listagem principal.
+
+## CT23 — Gerenciar disponibilidade do cardápio publicado do dia
+
+**Dado que** existe um cardápio publicado para o dia atual
+**Quando** a proprietária acessar “Gerenciar disponibilidade” pela visão geral
+**Então** o sistema deverá listar os pratos desse cardápio com controles de disponibilidade.
+
+**Dado que** a proprietária alterar o controle de um prato
+**Quando** o sistema concluir a persistência
+**Então** a disponibilidade desse item deverá ser atualizada imediatamente e somente nesse cardápio.
+
 ## CT13 — Configuração administrativa
 
 **Dado que** a proprietária está autenticada
@@ -124,3 +196,13 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT07 — Geração da mensagem | HU23 — Gerar mensagem de pedido | RN-28 |
 | CT08 — Alteração de quantidade | HU21 — Selecionar pratos e quantidades; HU22 — Revisar pedido antes do encaminhamento; HU23 — Gerar mensagem de pedido | RN-28 |
 | CT09 — Encaminhamento pelo WhatsApp | HU24 — Encaminhar pedido pelo WhatsApp | RN-27, RN-29 |
+| CT14 — Disponibilidade somente para o cardápio do dia | HU15 — Marcar item do dia como indisponível; HU16 — Reativar item do dia | RN-42 |
+| CT15 — Bloqueio de acesso direto à disponibilidade | HU15 — Marcar item do dia como indisponível | RN-42, RNF-11 |
+| CT16 — Entrada na visão geral administrativa | HU28 — Consultar visão geral administrativa | RN-43, RNF-25 |
+| CT17 — Acesso ao catálogo pela navegação | HU28 — Consultar visão geral administrativa; HU06 — Consultar catálogo de pratos | RN-43, RNF-25 |
+| CT18 — Resumo de cardápios futuros | HU28 — Consultar visão geral administrativa | RN-09, RN-43 |
+| CT19 — Cardápio somente em dia aberto | HU12 — Criar cardápio do dia | RN-23, RN-44 |
+| CT20 — Ações de rascunho | HU13 — Publicar cardápio do dia; HU17 — Consultar cardápios diários | RN-31 |
+| CT21 — Exclusão em lote de cardápios passados | HU17 — Consultar cardápios diários | RN-45 |
+| CT22 — Exclusão individual de cardápios ativos | HU17 — Consultar cardápios diários | RN-45 |
+| CT23 — Gerenciar disponibilidade do cardápio publicado do dia | HU15 — Marcar item do dia como indisponível; HU28 — Consultar visão geral administrativa | RN-42, RN-46 |

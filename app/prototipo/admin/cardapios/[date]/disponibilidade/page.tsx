@@ -21,6 +21,12 @@ function MenuAvailabilityContent() {
 
   useEffect(() => {
     queueMicrotask(() => {
+      const currentDate = new Date();
+      const today = [currentDate.getFullYear(), String(currentDate.getMonth() + 1).padStart(2, "0"), String(currentDate.getDate()).padStart(2, "0")].join("-");
+      if (params.date !== today) {
+        setError("A disponibilidade só pode ser gerenciada para o cardápio do dia.");
+        return;
+      }
       const currentMenu = readMenus().find((item) => item.date === params.date);
       setMenu(currentMenu);
       setDishes(readCatalog(DISHES_STORAGE_KEY, initialDishes));
@@ -48,7 +54,7 @@ function MenuAvailabilityContent() {
   }
 
   if (!menu) {
-    return <p className="rounded-2xl bg-white p-6 text-stone-600">Cardápio não encontrado.</p>;
+    return <p className="rounded-2xl bg-white p-6 text-stone-600" role="alert">{error || "Cardápio não encontrado."}</p>;
   }
 
   const menuDishes = menu.dishIds

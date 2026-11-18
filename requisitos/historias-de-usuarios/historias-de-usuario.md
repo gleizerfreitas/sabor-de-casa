@@ -166,6 +166,7 @@ Como proprietária, quero criar o cardápio de uma data selecionando pratos do c
 Critérios de aceitação:
 - O sistema deve permitir selecionar uma data.
 - A data deve ser hoje ou uma data futura, informada no formato de calendário, considerando o fuso horário do estabelecimento.
+- A data deve corresponder a um dia da semana configurado como aberto na página de funcionamento.
 - O sistema deve apresentar os pratos cadastrados para seleção.
 - O sistema deve apresentar para seleção somente os pratos ativos no catálogo.
 - A proprietária deve poder selecionar vários pratos.
@@ -177,6 +178,7 @@ Critérios de aceitação:
 - A proprietária deve conseguir preparar cardápios para diferentes datas futuras.
 - O sistema deve impedir a criação de mais de um cardápio para a mesma data.
 - Ao editar um cardápio, a validação de unicidade deve desconsiderar o próprio cardápio e continuar impedindo conflito com outra data já cadastrada.
+- A validação do dia de funcionamento deve ocorrer tanto na interface quanto no servidor.
 
 ### HU13 — Publicar cardápio do dia
 Como proprietária, quero publicar o cardápio preparado para uma data, para disponibilizar aos clientes as opções que serão oferecidas naquele dia.
@@ -229,6 +231,10 @@ Critérios de aceitação:
 - A reativação não deve modificar a disponibilidade do mesmo prato em outros cardápios diários.
 - A reativação deve usar o mesmo controle de disponibilidade e ser persistida automaticamente.
 
+Observação adicional para HU15 e HU16:
+- O gerenciamento de disponibilidade só deve ser acessível para o cardápio do dia, considerando o fuso horário configurado para o estabelecimento.
+- Cardápios futuros ou passados não devem exibir a ação nem aceitar acesso direto à tela de disponibilidade.
+
 ## Épico 5 — Consulta pública ao cardápio
 
 ### HU17 — Consultar cardápios diários
@@ -240,6 +246,25 @@ Critérios de aceitação:
 - A consulta deve apresentar os itens selecionados e suas disponibilidades.
 - A consulta deve permitir acessar um cardápio para edição.
 - O sistema não deve permitir mais de um cardápio para a mesma data.
+- A listagem não deve incluir cardápios cuja data seja anterior ao dia atual no fuso horário configurado.
+- A proprietária deve visualizar abaixo da listagem o número de cardápios passados e poderá excluí-los em lote.
+- Os cardápios em rascunho ou publicados da listagem principal devem oferecer exclusão individual, mediante confirmação.
+
+### HU28 — Consultar visão geral administrativa
+Como proprietária, quero visualizar um resumo da operação ao entrar na área administrativa, para identificar rapidamente a situação do cardápio atual e acessar as principais ações.
+
+Critérios de aceitação:
+- A rota principal da área administrativa deve apresentar a visão geral, e não o catálogo.
+- A visão geral deve exibir uma saudação usando o nome configurado da proprietária, quando disponível.
+- A visão geral deve exibir a situação do cardápio do dia.
+- A visão geral deve permitir acessar o cardápio do dia e gerenciar sua disponibilidade quando esse cardápio existir.
+- A visão geral deve informar quando não existe cardápio para hoje.
+- A visão geral deve oferecer atalho para criar um cardápio e consultar todos os cardápios.
+- A visão geral deve apresentar uma seção com os cardápios futuros preparados, suas datas, situações e quantidade de itens selecionados.
+- Quando o cardápio do dia estiver em preparação, o painel deve apresentar o botão “Publicar”.
+- Quando o cardápio do dia estiver publicado, o painel deve apresentar o botão “Gerenciar disponibilidade”.
+- O catálogo deve ser acessível pelo menu ou sidebar e por atalho na visão geral.
+- A visão geral deve ser protegida pela autenticação administrativa.
 
 ### HU18 — Visualizar cardápio do dia
 Como cliente, quero acessar o cardápio da Sabor de Casa por um endereço público, para conhecer os pratos oferecidos na data.

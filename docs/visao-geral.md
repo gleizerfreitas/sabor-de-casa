@@ -76,6 +76,8 @@ Principais funcionalidades:
 - Identificar itens esgotados ou indisponíveis.
 - Abrir, a partir do resumo do dia, uma tela exclusiva para alterar rapidamente a disponibilidade de cada prato do cardápio atual.
 - Salvar cada alteração automaticamente, sem confirmação adicional, e informar a proprietária com um alerta caso a atualização falhe.
+- Apresentar a visão geral como entrada da área administrativa, com situação do cardápio do dia e atalhos para as principais operações.
+- Disponibilizar o catálogo pelo menu/sidebar e por atalho na visão geral.
 
 ### 4.3. Cardápio público e preparação de pedidos
 
