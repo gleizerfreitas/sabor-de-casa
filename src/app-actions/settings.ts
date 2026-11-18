@@ -31,6 +31,7 @@ export async function saveAdminSettings(formData: FormData) {
     });
     revalidatePath("/admin/configuracoes");
     revalidatePath("/");
+    revalidatePath("/pedido");
     return { ok: true as const };
   } catch (error) {
     return fail(error);

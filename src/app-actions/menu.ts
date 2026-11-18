@@ -19,6 +19,8 @@ export async function saveMenu(id: string | null, formData: FormData) {
     const savedMenu = await saveDailyMenu(await createSupabaseServerClient(), id, input.date, input.dishIds);
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios", "layout");
+    revalidatePath("/");
+    revalidatePath("/pedido");
     revalidatePath(`/admin/cardapios/${id ?? ""}`);
     if (savedMenu && typeof savedMenu === "object" && "id" in savedMenu) {
       revalidatePath(`/admin/cardapios/${String(savedMenu.id)}/disponibilidade`, "layout");
@@ -38,6 +40,8 @@ export async function publishMenu(id: string) {
     await publishDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios", "layout");
+    revalidatePath("/");
+    revalidatePath("/pedido");
     revalidatePath(`/admin/cardapios/${id}/disponibilidade`, "layout");
     return { ok: true as const };
   } catch (error) {
@@ -51,6 +55,8 @@ export async function removeMenu(id: string) {
     await deleteDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios", "layout");
+    revalidatePath("/");
+    revalidatePath("/pedido");
     return { ok: true as const };
   } catch (error) {
     return fail(error);
@@ -63,6 +69,8 @@ export async function removePastMenus() {
     const deletedCount = await deletePastDailyMenus(await createSupabaseServerClient());
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios", "layout");
+    revalidatePath("/");
+    revalidatePath("/pedido");
     return { ok: true as const, deletedCount };
   } catch (error) {
     return fail(error);
@@ -75,6 +83,8 @@ export async function setMenuAvailability(menuId: string, dishId: string, availa
     await setMenuItemAvailability(await createSupabaseServerClient(), menuId, dishId, available);
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios");
+    revalidatePath("/");
+    revalidatePath("/pedido");
     revalidatePath(`/admin/cardapios/${menuId}/disponibilidade`);
     return { ok: true as const };
   } catch (error) {

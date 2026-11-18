@@ -1,11 +1,26 @@
+import { Suspense } from "react";
+import { connection } from "next/server";
+import { createSupabaseServerClient } from "@/src/lib/supabase/server";
+import { getPublicMenu } from "@/src/server/services/public-menu-service";
+import { PublicMenuComponent } from "@/src/components/public-menu";
+
+export const instant = false;
+
+async function PublicMenuContent() {
+  await connection();
+  const menu = await getPublicMenu(await createSupabaseServerClient());
+
+  return (
+    <PublicMenuComponent menu={menu} />
+  );
+}
+
 export default function PublicPage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 items-center px-5 py-12">
-      <div>
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Sabor de Casa</p>
-        <h1 className="mt-3 text-4xl font-bold text-stone-900">Área pública</h1>
-        <p className="mt-3 text-stone-600">Os módulos públicos serão implementados em features futuras.</p>
-      </div>
+    <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-8 sm:py-12">
+      <Suspense fallback={<p className="py-12 text-stone-500">Carregando cardápio...</p>}>
+        <PublicMenuContent />
+      </Suspense>
     </main>
   );
 }
