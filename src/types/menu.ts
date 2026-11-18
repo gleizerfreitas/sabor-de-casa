@@ -11,3 +11,8 @@ export type DailyMenu = {
     available: boolean;
   }>;
 };
+
+export type DailyMenuListing = {
+  activeMenus: DailyMenu[];
+  pastMenuCount: number;
+};

@@ -5,6 +5,8 @@ import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { listCatalog } from "@/src/server/services/catalog-service";
 import { getAdminSettings } from "@/src/server/services/settings-service";
 
+export const instant = false;
+
 async function NewMenuContent() {
   await connection();
   const supabase = await createSupabaseServerClient();

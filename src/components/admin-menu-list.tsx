@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { DailyMenu } from "@/src/types/menu";
 import { AdminMenuActions } from "@/src/components/admin-menu-actions";
+import { removePastMenus } from "@/src/app-actions/menu";
 
 function formatMenuDate(date: string) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -14,8 +15,12 @@ function formatMenuDate(date: string) {
   }).format(new Date(`${date}T12:00:00Z`)).replace(".", "");
 }
 
-export function AdminMenuList({ initialMenus }: { initialMenus: DailyMenu[] }) {
+export function AdminMenuList({ initialMenus, initialPastMenuCount }: { initialMenus: DailyMenu[]; initialPastMenuCount: number }) {
   const [menus, setMenus] = useState(initialMenus);
+  const [pastMenuCount, setPastMenuCount] = useState(initialPastMenuCount);
+  const [error, setError] = useState("");
+  const [working, setWorking] = useState(false);
+
 
   function updateMenu(id: string, changes: Partial<DailyMenu>) {
     setMenus((current) => current.map((menu) => menu.id === id ? { ...menu, ...changes } : menu));
@@ -25,8 +30,18 @@ export function AdminMenuList({ initialMenus }: { initialMenus: DailyMenu[] }) {
     setMenus((current) => current.filter((menu) => menu.id !== id));
   }
 
+  async function removePast() {
+    if (!window.confirm(`Excluir os ${pastMenuCount} cardápios passados? Essa operação não pode ser desfeita.`)) return;
+    setWorking(true);
+    setError("");
+    const result = await removePastMenus();
+    setWorking(false);
+    if (!result.ok) setError(result.error);
+    else setPastMenuCount(0);
+  }
+
   return (
-    <div className="mt-8 grid gap-4">
+    <><div className="mt-8 grid gap-4">
       {menus.map((menu) => (
         <article className="rounded-3xl bg-white p-6 ring-1 ring-stone-200" key={menu.id}>
           <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -48,11 +63,18 @@ export function AdminMenuList({ initialMenus }: { initialMenus: DailyMenu[] }) {
                   onRemoved={() => removeMenu(menu.id)}
                 />
               )}
+              {menu.status === "PUBLICADO" && (
+                <AdminMenuActions
+                  id={menu.id}
+                  onRemoved={() => removeMenu(menu.id)}
+                />
+              )}
             </div>
           </div>
         </article>
       ))}
       {menus.length === 0 && <p className="rounded-2xl bg-white p-6 text-stone-600">Nenhum cardápio cadastrado.</p>}
     </div>
+    <section className="mt-8 rounded-3xl border border-amber-200 bg-amber-50 p-6"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><p className="text-sm font-bold uppercase tracking-[0.12em] text-amber-700">Cardápios passados</p><h2 className="mt-2 text-xl font-bold text-stone-900">{pastMenuCount} {pastMenuCount === 1 ? "cardápio passado" : "cardápios passados"}</h2><p className="mt-1 text-sm text-stone-600">Os cardápios anteriores não aparecem na listagem principal.</p></div><button type="button" disabled={working || pastMenuCount === 0} onClick={removePast} className="rounded-xl border border-red-300 bg-white px-4 py-3 text-sm font-bold text-red-700 disabled:cursor-not-allowed disabled:opacity-50">Excluir cardápios passados</button></div>{error && <p role="alert" className="mt-3 text-sm font-semibold text-red-700">{error}</p>}</section></>
   );
 }

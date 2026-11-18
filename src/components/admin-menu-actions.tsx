@@ -9,7 +9,7 @@ export function AdminMenuActions({
   onRemoved,
 }: {
   id: string;
-  onPublished: () => void;
+  onPublished?: () => void;
   onRemoved: () => void;
 }) {
   const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export function AdminMenuActions({
     const result = await publishMenu(id);
     if (!result.ok) setError(result.error);
     setWorking(false);
-    if (result.ok) onPublished();
+    if (result.ok && onPublished) onPublished();
   }
 
   async function remove() {
@@ -29,14 +29,14 @@ export function AdminMenuActions({
     setWorking(true);
     setError("");
     const result = await removeMenu(id);
-    if (!result.ok) setError(result.error);
     setWorking(false);
-    if (result.ok) onRemoved();
+    if (!result.ok) setError(result.error);
+    else onRemoved();
   }
 
   return (
     <>
-      <button type="button" disabled={working} onClick={publish} className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Publicar</button>
+      {onPublished && <button type="button" disabled={working} onClick={publish} className="rounded-xl bg-orange-600 px-4 py-2 text-sm font-semibold text-white disabled:opacity-60">Publicar</button>}
       <button type="button" disabled={working} onClick={remove} className="rounded-xl border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 disabled:opacity-60">Excluir</button>
       {error && <span role="alert" className="basis-full text-sm font-semibold text-red-700">{error}</span>}
     </>

@@ -246,6 +246,9 @@ Critérios de aceitação:
 - A consulta deve apresentar os itens selecionados e suas disponibilidades.
 - A consulta deve permitir acessar um cardápio para edição.
 - O sistema não deve permitir mais de um cardápio para a mesma data.
+- A listagem não deve incluir cardápios cuja data seja anterior ao dia atual no fuso horário configurado.
+- A proprietária deve visualizar abaixo da listagem o número de cardápios passados e poderá excluí-los em lote.
+- Os cardápios em rascunho ou publicados da listagem principal devem oferecer exclusão individual, mediante confirmação.
 
 ### HU28 — Consultar visão geral administrativa
 Como proprietária, quero visualizar um resumo da operação ao entrar na área administrativa, para identificar rapidamente a situação do cardápio atual e acessar as principais ações.

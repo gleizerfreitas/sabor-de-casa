@@ -191,3 +191,7 @@ Após a autenticação, a rota principal da área administrativa deve apresentar
 ## RN-44
 **Descrição:**
 Um cardápio diário só pode ser criado ou agendado para uma data cujo dia da semana esteja configurado como aberto no funcionamento administrativo. A validação deve considerar a configuração persistida dos sete dias da semana.
+
+## RN-45
+**Descrição:**
+Cardápios com data anterior ao dia atual no fuso horário configurado não devem aparecer na listagem principal. Eles podem ser identificados em destaque na listagem e excluídos somente por uma operação administrativa em lote.

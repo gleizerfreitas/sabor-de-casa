@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { requireAdmin } from "@/src/server/auth/require-admin";
-import { deleteDailyMenu, publishDailyMenu, saveDailyMenu } from "@/src/server/services/menu-service";
+import { deleteDailyMenu, deletePastDailyMenus, publishDailyMenu, saveDailyMenu } from "@/src/server/services/menu-service";
 import { dailyMenuSchema } from "@/src/validations/menu";
 
 const fail = (error: unknown) => ({
@@ -45,6 +45,18 @@ export async function removeMenu(id: string) {
     revalidatePath("/admin");
     revalidatePath("/admin/cardapios", "page");
     return { ok: true as const };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+export async function removePastMenus() {
+  try {
+    await requireAdmin();
+    const deletedCount = await deletePastDailyMenus(await createSupabaseServerClient());
+    revalidatePath("/admin");
+    revalidatePath("/admin/cardapios", "page");
+    return { ok: true as const, deletedCount };
   } catch (error) {
     return fail(error);
   }

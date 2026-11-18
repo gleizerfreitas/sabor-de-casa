@@ -8,20 +8,7 @@ Painel de Destaque:
 
 
 
-Página de Cardápios:
-
-1. BUG: Ao publicar um cardápio, a página está dando erro temporário:
-Capturar o Erro (REOSLVIDO)
-
-
-2. Feature do EXCLUIR: 
-
-- Não listar cardápios passados.
-- NNão disponiblizar a opção EXCLUIR para cardápios da lista
-- Informar que existem X cardapios passados e uma ação para exclui em lote.
-
-
-Feature
+Features
 
 1. 
 Menu / Sidebar

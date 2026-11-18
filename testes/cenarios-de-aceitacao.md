@@ -132,6 +132,22 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** acionar “Publicar”
 **Então** o sistema deverá rejeitar a publicação.
 
+## CT21 — Exclusão em lote de cardápios passados
+
+**Dado que** existem cardápios com data anterior ao dia atual
+**Quando** a proprietária consultar a listagem
+**Então** esses cardápios não deverão aparecer na listagem principal e deverão ser informados em painel separado.
+
+**Dado que** o painel informa cardápios passados
+**Quando** a proprietária confirmar a exclusão em lote
+**Então** todos os cardápios anteriores deverão ser excluídos e o painel deverá deixar de contá-los.
+
+## CT22 — Exclusão individual de cardápios ativos
+
+**Dado que** existe um cardápio em rascunho ou publicado cuja data seja hoje ou futura
+**Quando** a proprietária confirmar a exclusão
+**Então** o cardápio deverá ser removido da listagem principal.
+
 ## CT13 — Configuração administrativa
 
 **Dado que** a proprietária está autenticada
@@ -177,3 +193,5 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT18 — Resumo de cardápios futuros | HU28 — Consultar visão geral administrativa | RN-09, RN-43 |
 | CT19 — Cardápio somente em dia aberto | HU12 — Criar cardápio do dia | RN-23, RN-44 |
 | CT20 — Ações de rascunho | HU13 — Publicar cardápio do dia; HU17 — Consultar cardápios diários | RN-31 |
+| CT21 — Exclusão em lote de cardápios passados | HU17 — Consultar cardápios diários | RN-45 |
+| CT22 — Exclusão individual de cardápios ativos | HU17 — Consultar cardápios diários | RN-45 |

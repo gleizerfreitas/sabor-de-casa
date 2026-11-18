@@ -73,19 +73,31 @@ export async function getTodayMenuSummary(supabase: SupabaseClient): Promise<Adm
 }
 
 export async function listDailyMenus(supabase: SupabaseClient) {
+  const settings = await supabase
+    .from("admin_settings")
+    .select("timezone")
+    .order("created_at")
+    .limit(1)
+    .maybeSingle();
+  if (settings.error) throw new Error(`Não foi possível carregar o fuso horário: ${settings.error.message}`);
+
+  const today = todayInTimezone(settings.data?.timezone ?? "America/Fortaleza");
   const result = await supabase
     .from("daily_menus")
     .select("id, menu_date, status, published_at, daily_menu_items(id, dish_id, available)")
     .order("menu_date", { ascending: true });
   if (result.error) throw new Error(`Não foi possível carregar os cardápios: ${result.error.message}`);
-
-  return (result.data ?? []).map((menu) => ({
+  const allMenus = (result.data ?? []).map((menu) => ({
     id: menu.id,
     menu_date: menu.menu_date,
     status: menu.status,
     published_at: menu.published_at,
     items: Array.isArray(menu.daily_menu_items) ? menu.daily_menu_items : [],
   })) as DailyMenu[];
+  return {
+    activeMenus: allMenus.filter((menu) => menu.menu_date >= today),
+    pastMenuCount: allMenus.filter((menu) => menu.menu_date < today).length,
+  };
 }
 
 export async function getDailyMenu(supabase: SupabaseClient, id: string) {
@@ -132,4 +144,10 @@ export async function publishDailyMenu(supabase: SupabaseClient, id: string) {
 export async function deleteDailyMenu(supabase: SupabaseClient, id: string) {
   const result = await supabase.rpc("delete_daily_menu", { p_menu_id: id });
   if (result.error) throw new Error(result.error.message || "Não foi possível excluir o cardápio.");
+}
+
+export async function deletePastDailyMenus(supabase: SupabaseClient) {
+  const result = await supabase.rpc("delete_past_daily_menus");
+  if (result.error) throw new Error(result.error.message || "Não foi possível excluir os cardápios passados.");
+  return result.data as number;
 }

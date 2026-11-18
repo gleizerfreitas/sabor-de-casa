@@ -45,7 +45,6 @@ function AdminMenuFormState({
   const [date, setDate] = useState(menu?.menu_date ?? "");
   const [selectedDishIds, setSelectedDishIds] = useState<string[]>(menu?.items.map((item) => item.dish_id) ?? []);
   const [error, setError] = useState("");
-  const [saved, setSaved] = useState(false);
   const [minimumDate, setMinimumDate] = useState("");
   const selected = useMemo(() => new Set(selectedDishIds), [selectedDishIds]);
   const openDaySet = useMemo(() => new Set(openDays), [openDays]);
@@ -84,18 +83,7 @@ function AdminMenuFormState({
     }
     const result = await saveMenu(menu?.id ?? null, new FormData(event.currentTarget));
     if (!result.ok) setError(result.error);
-    else setSaved(true);
-  }
-
-  if (saved) {
-    return (
-      <div className="rounded-3xl bg-white p-8 ring-1 ring-stone-200" role="status">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-emerald-700">Operação concluída</p>
-        <h1 className="mt-2 text-3xl font-bold text-stone-900">Cardápio salvo com sucesso</h1>
-        <p className="mt-3 text-stone-600">O cardápio foi salvo como rascunho e ainda não está disponível para os clientes.</p>
-        <button type="button" onClick={onSaved} className="mt-6 rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">Voltar aos cardápios</button>
-      </div>
-    );
+    else onSaved();
   }
 
   return (
@@ -142,7 +130,7 @@ function AdminMenuFormState({
 
         <div className="flex flex-wrap justify-end gap-3">
           <Link href="/admin/cardapios" className="rounded-xl border border-stone-300 px-5 py-3 text-sm font-semibold text-stone-700">Cancelar</Link>
-          <button type="submit" className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">Salvar como rascunho</button>
+          <button type="submit" className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">{menu?.status === "PUBLICADO" ? "Salvar" : "Salvar como rascunho"}</button>
         </div>
       </form>
     </div>
