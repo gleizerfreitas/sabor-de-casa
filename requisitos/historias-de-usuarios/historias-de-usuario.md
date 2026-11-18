@@ -261,6 +261,8 @@ Critérios de aceitação:
 - A visão geral deve informar quando não existe cardápio para hoje.
 - A visão geral deve oferecer atalho para criar um cardápio e consultar todos os cardápios.
 - A visão geral deve apresentar uma seção com os cardápios futuros preparados, suas datas, situações e quantidade de itens selecionados.
+- Quando o cardápio do dia estiver em preparação, o painel deve apresentar o botão “Publicar”.
+- Quando o cardápio do dia estiver publicado, o painel deve apresentar o botão “Gerenciar disponibilidade”.
 - O catálogo deve ser acessível pelo menu ou sidebar e por atalho na visão geral.
 - A visão geral deve ser protegida pela autenticação administrativa.
 

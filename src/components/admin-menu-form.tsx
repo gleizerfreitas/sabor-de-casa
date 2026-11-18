@@ -26,7 +26,10 @@ export function AdminMenuForm({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  return <AdminMenuFormState key={pathname} categories={categories} dishes={dishes} menu={menu} openDays={openDays} onSaved={() => { router.replace("/admin/cardapios"); router.refresh(); }} />;
+  return <AdminMenuFormState key={pathname} categories={categories} dishes={dishes} menu={menu} openDays={openDays} onSaved={() => {
+    router.push("/admin/cardapios");
+    router.refresh();
+  }} />;
 }
 
 function AdminMenuFormState({

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { requireAdmin } from "@/src/server/auth/require-admin";
-import { deleteDailyMenu, deletePastDailyMenus, publishDailyMenu, saveDailyMenu } from "@/src/server/services/menu-service";
+import { deleteDailyMenu, deletePastDailyMenus, publishDailyMenu, saveDailyMenu, setMenuItemAvailability } from "@/src/server/services/menu-service";
 import { dailyMenuSchema } from "@/src/validations/menu";
 
 const fail = (error: unknown) => ({
@@ -16,10 +16,16 @@ export async function saveMenu(id: string | null, formData: FormData) {
     await requireAdmin();
     const dishIds = formData.getAll("dishIds").map(String);
     const input = dailyMenuSchema.parse({ date: formData.get("date"), dishIds });
-    await saveDailyMenu(await createSupabaseServerClient(), id, input.date, input.dishIds);
+    const savedMenu = await saveDailyMenu(await createSupabaseServerClient(), id, input.date, input.dishIds);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios", "page");
+    revalidatePath("/admin/cardapios", "layout");
     revalidatePath(`/admin/cardapios/${id ?? ""}`);
+    if (savedMenu && typeof savedMenu === "object" && "id" in savedMenu) {
+      revalidatePath(`/admin/cardapios/${String(savedMenu.id)}/disponibilidade`, "layout");
+    }
+    if (id) {
+      revalidatePath(`/admin/cardapios/${id}/disponibilidade`, "layout");
+    }
     return { ok: true as const };
   } catch (error) {
     return fail(error);
@@ -31,7 +37,8 @@ export async function publishMenu(id: string) {
     await requireAdmin();
     await publishDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios", "page");
+    revalidatePath("/admin/cardapios", "layout");
+    revalidatePath(`/admin/cardapios/${id}/disponibilidade`, "layout");
     return { ok: true as const };
   } catch (error) {
     return fail(error);
@@ -43,7 +50,7 @@ export async function removeMenu(id: string) {
     await requireAdmin();
     await deleteDailyMenu(await createSupabaseServerClient(), id);
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios", "page");
+    revalidatePath("/admin/cardapios", "layout");
     return { ok: true as const };
   } catch (error) {
     return fail(error);
@@ -55,8 +62,21 @@ export async function removePastMenus() {
     await requireAdmin();
     const deletedCount = await deletePastDailyMenus(await createSupabaseServerClient());
     revalidatePath("/admin");
-    revalidatePath("/admin/cardapios", "page");
+    revalidatePath("/admin/cardapios", "layout");
     return { ok: true as const, deletedCount };
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+export async function setMenuAvailability(menuId: string, dishId: string, available: boolean) {
+  try {
+    await requireAdmin();
+    await setMenuItemAvailability(await createSupabaseServerClient(), menuId, dishId, available);
+    revalidatePath("/admin");
+    revalidatePath("/admin/cardapios");
+    revalidatePath(`/admin/cardapios/${menuId}/disponibilidade`);
+    return { ok: true as const };
   } catch (error) {
     return fail(error);
   }

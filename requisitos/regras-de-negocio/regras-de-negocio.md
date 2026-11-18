@@ -195,3 +195,7 @@ Um cardápio diário só pode ser criado ou agendado para uma data cujo dia da s
 ## RN-45
 **Descrição:**
 Cardápios com data anterior ao dia atual no fuso horário configurado não devem aparecer na listagem principal. Eles podem ser identificados em destaque na listagem e excluídos somente por uma operação administrativa em lote.
+
+## RN-46
+**Descrição:**
+A disponibilidade rápida só pode ser gerenciada para o cardápio publicado cuja data seja o dia atual no fuso horário configurado. A alteração é específica do prato naquele cardápio e deve ser persistida imediatamente.

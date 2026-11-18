@@ -15,7 +15,11 @@ async function DailyMenusContent() {
     <div>
       <p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Operação</p>
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><h1 className="mt-2 text-3xl font-bold text-stone-900">Cardápios diários</h1><p className="mt-2 text-stone-500">Prepare e publique opções para cada data.</p></div><Link href="/admin/cardapios/novo" className="rounded-xl bg-orange-600 px-4 py-3 text-center text-sm font-bold text-white">+ Novo cardápio</Link></div>
-      <AdminMenuList initialMenus={listing.activeMenus} initialPastMenuCount={listing.pastMenuCount} />
+      <AdminMenuList
+        key={JSON.stringify(listing.activeMenus.map((menu) => [menu.id, menu.status, menu.menu_date, menu.items.length]))}
+        initialMenus={listing.activeMenus}
+        initialPastMenuCount={listing.pastMenuCount}
+      />
     </div>
   );
 }

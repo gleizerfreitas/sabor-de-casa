@@ -148,6 +148,16 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 **Quando** a proprietária confirmar a exclusão
 **Então** o cardápio deverá ser removido da listagem principal.
 
+## CT23 — Gerenciar disponibilidade do cardápio publicado do dia
+
+**Dado que** existe um cardápio publicado para o dia atual
+**Quando** a proprietária acessar “Gerenciar disponibilidade” pela visão geral
+**Então** o sistema deverá listar os pratos desse cardápio com controles de disponibilidade.
+
+**Dado que** a proprietária alterar o controle de um prato
+**Quando** o sistema concluir a persistência
+**Então** a disponibilidade desse item deverá ser atualizada imediatamente e somente nesse cardápio.
+
 ## CT13 — Configuração administrativa
 
 **Dado que** a proprietária está autenticada
@@ -195,3 +205,4 @@ Os cenários validam fluxos integrados e complementam as histórias de usuário 
 | CT20 — Ações de rascunho | HU13 — Publicar cardápio do dia; HU17 — Consultar cardápios diários | RN-31 |
 | CT21 — Exclusão em lote de cardápios passados | HU17 — Consultar cardápios diários | RN-45 |
 | CT22 — Exclusão individual de cardápios ativos | HU17 — Consultar cardápios diários | RN-45 |
+| CT23 — Gerenciar disponibilidade do cardápio publicado do dia | HU15 — Marcar item do dia como indisponível; HU28 — Consultar visão geral administrativa | RN-42, RN-46 |

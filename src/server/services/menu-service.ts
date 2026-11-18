@@ -151,3 +151,68 @@ export async function deletePastDailyMenus(supabase: SupabaseClient) {
   if (result.error) throw new Error(result.error.message || "Não foi possível excluir os cardápios passados.");
   return result.data as number;
 }
+
+export type TodayMenuAvailabilityItem = {
+  dish_id: string;
+  available: boolean;
+  name: string;
+};
+
+export async function getTodayMenuAvailability(supabase: SupabaseClient, menuId: string) {
+  const settings = await supabase
+    .from("admin_settings")
+    .select("timezone")
+    .order("created_at")
+    .limit(1)
+    .maybeSingle();
+  if (settings.error) throw new Error(`Não foi possível carregar o fuso horário: ${settings.error.message}`);
+
+  const today = todayInTimezone(settings.data?.timezone ?? "America/Fortaleza");
+  const menu = await supabase
+    .from("daily_menus")
+    .select("id, menu_date, status")
+    .eq("id", menuId)
+    .maybeSingle();
+  if (menu.error) throw new Error(`Não foi possível carregar o cardápio: ${menu.error.message}`);
+  if (!menu.data) return null;
+  if (menu.data.menu_date !== today || menu.data.status !== "PUBLICADO") {
+    throw new Error("A disponibilidade só pode ser gerenciada para o cardápio publicado do dia.");
+  }
+
+  const items = await supabase
+    .from("daily_menu_items")
+    .select("dish_id, available")
+    .eq("menu_id", menuId)
+    .order("created_at");
+  if (items.error) throw new Error(`Não foi possível carregar os pratos: ${items.error.message}`);
+
+  const dishIds = (items.data ?? []).map((item) => item.dish_id);
+  const dishes = dishIds.length > 0
+    ? await supabase.from("dishes").select("id, name").in("id", dishIds)
+    : { data: [], error: null };
+  if (dishes.error) throw new Error(`Não foi possível carregar os nomes dos pratos: ${dishes.error.message}`);
+  const namesById = new Map((dishes.data ?? []).map((dish) => [dish.id, dish.name]));
+
+  return {
+    menu: menu.data,
+    items: (items.data ?? []).map((item) => ({
+      dish_id: item.dish_id,
+      available: item.available,
+      name: namesById.get(item.dish_id) ?? "Prato",
+    })) as TodayMenuAvailabilityItem[],
+  };
+}
+
+export async function setMenuItemAvailability(
+  supabase: SupabaseClient,
+  menuId: string,
+  dishId: string,
+  available: boolean,
+) {
+  const result = await supabase.rpc("set_daily_menu_item_availability", {
+    p_menu_id: menuId,
+    p_dish_id: dishId,
+    p_available: available,
+  });
+  if (result.error) throw new Error(result.error.message || "Não foi possível atualizar a disponibilidade.");
+}

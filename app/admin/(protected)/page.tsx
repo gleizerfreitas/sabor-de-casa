@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { connection } from "next/server";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { getTodayMenuSummary } from "@/src/server/services/menu-service";
+import { AdminTodayMenuActions } from "@/src/components/admin-today-menu-actions";
 
 function DashboardIcon({ name }: { name: "catalog" | "menus" }) {
   const paths = {
@@ -13,7 +14,11 @@ function DashboardIcon({ name }: { name: "catalog" | "menus" }) {
 }
 
 function formatMenuDate(date: string) {
-  return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`)).replace(".", "");
+  return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
+}
+
+function formatTodayDate(date: string) {
+  return new Intl.DateTimeFormat("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
 }
 
 async function AdminOverviewContent() {
@@ -28,12 +33,12 @@ async function AdminOverviewContent() {
       <p className="mt-2 text-stone-500">Acompanhe o cardápio do dia e acesse rapidamente as operações da Sabor de Casa.</p>
 
       <section className="mt-8 rounded-3xl bg-orange-600 p-6 text-white">
-        <p className="text-sm text-orange-100">Cardápio de hoje · {overview.today}</p>
+        <p className="text-sm text-orange-100">Cardápio de hoje · {formatTodayDate(overview.today)}</p>
         {overview.menu ? (
           <>
             <h2 className="mt-1 text-2xl font-bold">{overview.menu.status === "PUBLICADO" ? "Publicado" : "Em preparação"}</h2>
             <p className="mt-1 text-sm text-orange-100">{overview.menu.item_count} {overview.menu.item_count === 1 ? "item selecionado" : "itens selecionados"}</p>
-            <Link href={`/admin/cardapios/${overview.menu.id}/disponibilidade`} className="mt-5 inline-block rounded-xl bg-white px-4 py-3 text-center text-sm font-bold text-orange-700">Gerenciar disponibilidade</Link>
+            <AdminTodayMenuActions menuId={overview.menu.id} status={overview.menu.status} />
           </>
         ) : (
           <>
