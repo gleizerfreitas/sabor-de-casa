@@ -1,27 +1,10 @@
-Bugs do Cardápio Público
+Melhorias:
 
-1. Problemas de cache entre a página principal e o pedido. 
+Cardápio Publíco: 
 
-Passos: 
-- usuario seleciona uma quantidade de um prato especifico
-- usuario segue para o pedido e a quantidade esta correta, conforme selecao anterior.
-- Usario volta a pagina do cardapio e altera a quantidade
-- Usario sehue para o pedido, e a quantidade não foi alterada.
+Quando o cardapio publico do dia, está fora do horario de atendimento, ou ainda não abriu ou tem passado do horario de pedidos, a interface ainda permite que o usuario marque quantidade dos pratos, mesmo nao podendo fazer o pedido.
 
-Isso acontece, tambem, ao selecionar quantidades de outros pratos.
-
-
-2. Erro ao clicar no Botão de WhatsApp.
-
-Aparece um erro na propria tela do pedido: "Invalid UUID"
-
-Correções aplicadas:
-- A seleção agora é restaurada a partir da própria query da navegação ao retornar ao cardápio.
-- A revisão é remontada quando os itens da seleção mudam.
-- A validação do WhatsApp aceita os UUIDs persistidos pelo PostgreSQL, incluindo os identificadores usados nas sementes locais.
-
-
-
+Falta o nome da Marmitaria Sabor de Casa (Deveria ser uma configuração?)
 
 
 
