@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import Image from "next/image";
 import { connection } from "next/server";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { getPublicMenu } from "@/src/server/services/public-menu-service";
@@ -11,7 +12,19 @@ async function PublicMenuContent() {
   const menu = await getPublicMenu(await createSupabaseServerClient());
 
   return (
-    <PublicMenuComponent menu={menu} />
+    <>
+      <div className="mb-8 flex justify-center">
+        <Image
+          src="/logocolorida.png"
+          alt="Sabor de Casa"
+          width={420}
+          height={154}
+          className="h-auto w-64 object-contain sm:w-80 md:w-96"
+          priority
+        />
+      </div>
+      <PublicMenuComponent menu={menu} />
+    </>
   );
 }
 
