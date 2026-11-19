@@ -156,6 +156,8 @@ export type TodayMenuAvailabilityItem = {
   dish_id: string;
   available: boolean;
   name: string;
+  category_id: string;
+  category_name: string;
 };
 
 export async function getTodayMenuAvailability(supabase: SupabaseClient, menuId: string) {
@@ -188,18 +190,39 @@ export async function getTodayMenuAvailability(supabase: SupabaseClient, menuId:
 
   const dishIds = (items.data ?? []).map((item) => item.dish_id);
   const dishes = dishIds.length > 0
-    ? await supabase.from("dishes").select("id, name").in("id", dishIds)
+    ? await supabase.from("dishes").select("id, name, category_id").in("id", dishIds)
     : { data: [], error: null };
-  if (dishes.error) throw new Error(`Não foi possível carregar os nomes dos pratos: ${dishes.error.message}`);
-  const namesById = new Map((dishes.data ?? []).map((dish) => [dish.id, dish.name]));
+  if (dishes.error) throw new Error(`Não foi possível carregar os pratos: ${dishes.error.message}`);
+
+  const categoryIds = [...new Set((dishes.data ?? []).map((dish) => dish.category_id))];
+  const categories = categoryIds.length > 0
+    ? await supabase.from("categories").select("id, name").in("id", categoryIds)
+    : { data: [], error: null };
+  if (categories.error) throw new Error(`Não foi possível carregar as categorias dos pratos: ${categories.error.message}`);
+
+  const dishesById = new Map((dishes.data ?? []).map((dish) => [dish.id, dish]));
+  const categoriesById = new Map((categories.data ?? []).map((category) => [category.id, category.name]));
+  const availabilityItems = (items.data ?? []).map((item) => {
+    const dish = dishesById.get(item.dish_id);
+    const categoryId = dish?.category_id ?? "";
+    return {
+      dish_id: item.dish_id,
+      available: item.available,
+      name: dish?.name ?? "Prato",
+      category_id: categoryId,
+      category_name: categoriesById.get(categoryId) ?? "Sem categoria",
+    };
+  });
+  availabilityItems.sort((left, right) =>
+    left.category_name.localeCompare(right.category_name, "pt-BR", { sensitivity: "base" })
+      || left.category_id.localeCompare(right.category_id)
+      || left.name.localeCompare(right.name, "pt-BR", { sensitivity: "base" })
+      || left.dish_id.localeCompare(right.dish_id),
+  );
 
   return {
     menu: menu.data,
-    items: (items.data ?? []).map((item) => ({
-      dish_id: item.dish_id,
-      available: item.available,
-      name: namesById.get(item.dish_id) ?? "Prato",
-    })) as TodayMenuAvailabilityItem[],
+    items: availabilityItems as TodayMenuAvailabilityItem[],
   };
 }
 

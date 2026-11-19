@@ -152,11 +152,11 @@ Estes cenários complementam os critérios individuais das histórias de usuári
 
 **Dado que** existe um cardápio publicado para o dia atual
 **Quando** a proprietária acessar “Gerenciar disponibilidade” pela visão geral
-**Então** o sistema deverá listar os pratos desse cardápio com controles de disponibilidade.
+**Então** o sistema deverá listar os pratos desse cardápio agrupados por categoria, com controles de disponibilidade e ordem estável por categoria e nome do prato.
 
 **Dado que** a proprietária alterar o controle de um prato
 **Quando** o sistema concluir a persistência
-**Então** a disponibilidade desse item deverá ser atualizada imediatamente e somente nesse cardápio.
+**Então** a disponibilidade desse item deverá ser atualizada imediatamente e somente nesse cardápio, sem alterar a categoria ou a posição do prato na lista.
 
 ## CT13 — Configuração administrativa
 

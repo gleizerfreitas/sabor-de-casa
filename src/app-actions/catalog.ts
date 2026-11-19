@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { requireAdmin } from "@/src/server/auth/require-admin";
-import { createCategory, deleteCategory, removeUploadedPhoto, updateCategory } from "@/src/server/services/catalog-service";
+import { createCategory, deleteCategory, deleteDish, removeUploadedPhoto, updateCategory } from "@/src/server/services/catalog-service";
 import { categorySchema, dishSchema } from "@/src/validations/catalog";
 import { inspectImage, validatePhoto } from "@/src/server/catalog/photo-validation";
 
@@ -25,6 +25,20 @@ export async function saveCategory(id: string | null, formData: FormData) {
 export async function removeCategory(id: string) {
   try { await requireAdmin(); await deleteCategory(await createSupabaseServerClient(), id); revalidatePath("/admin"); revalidatePath("/"); revalidatePath("/pedido"); return { ok: true as const }; }
   catch (error) { return fail(error); }
+}
+
+export async function removeDish(id: string) {
+  try {
+    await requireAdmin();
+    await deleteDish(await createSupabaseServerClient(), id);
+    revalidatePath("/admin");
+    revalidatePath("/admin/catalogo");
+    revalidatePath("/");
+    revalidatePath("/pedido");
+    return { ok: true as const };
+  } catch (error) {
+    return fail(error);
+  }
 }
 
 export async function saveDish(id: string | null, formData: FormData) {
@@ -51,6 +65,7 @@ export async function saveDish(id: string | null, formData: FormData) {
     if (result.error) throw result.error;
     persisted = true;
     revalidatePath("/admin");
+    revalidatePath("/admin/catalogo");
     revalidatePath("/");
     revalidatePath("/pedido");
     return { ok: true as const };

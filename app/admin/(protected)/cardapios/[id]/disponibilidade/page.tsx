@@ -25,7 +25,7 @@ async function AvailabilityContent({ id }: { id: string }) {
         </div>
       </div>
       <AdminMenuAvailability
-        key={availability.items.map((item) => `${item.dish_id}:${item.available}`).join("|")}
+        key={id}
         menuId={id}
         initialItems={availability.items}
       />

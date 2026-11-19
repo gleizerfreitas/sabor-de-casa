@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
+import Image from "next/image";
 import { AdminLogoutButton } from "../logout-button";
 import { requireAdmin } from "@/src/server/auth/require-admin";
 import {
@@ -34,7 +35,10 @@ export default async function ProtectedAdminLayout({
     <div className="min-h-full flex-1 bg-stone-100">
       <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <strong className="text-orange-700">Sabor de Casa</strong>
+          <div className="flex items-center gap-3">
+            <Image src="/iconelogocolorida.png" alt="" width={36} height={30} className="shrink-0 object-contain" />
+            <strong className="text-orange-700">Sabor de Casa</strong>
+          </div>
           <AdminLogoutButton />
         </div>
       </header>

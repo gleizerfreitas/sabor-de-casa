@@ -34,3 +34,36 @@ export async function deleteCategory(supabase: SupabaseClient, id: string) {
   const result = await supabase.from("categories").delete().eq("id", id);
   if (result.error) throw new Error(result.error.code === "23503" ? "Não é possível excluir uma categoria que possui pratos." : "Não foi possível excluir a categoria.");
 }
+
+export async function deleteDish(supabase: SupabaseClient, id: string) {
+  const dish = await supabase
+    .from("dishes")
+    .select("photo_url")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (dish.error) throw new Error("Não foi possível localizar o prato.");
+  if (!dish.data) throw new Error("Prato não encontrado.");
+
+  const result = await supabase.from("dishes").delete().eq("id", id);
+  if (result.error) {
+    throw new Error(
+      result.error.code === "23503"
+        ? "Não é possível excluir um prato associado a cardápios."
+        : "Não foi possível excluir o prato.",
+    );
+  }
+
+  const photoUrl = dish.data.photo_url as string;
+  const marker = "/dish-photos/";
+  const markerIndex = photoUrl.indexOf(marker);
+  if (markerIndex >= 0) {
+    const path = decodeURIComponent(photoUrl.slice(markerIndex + marker.length));
+    try {
+      await removeUploadedPhoto(supabase, path);
+    } catch {
+      // A exclusão do registro já foi concluída; uma fotografia órfã não pode reverter o prato.
+      console.error(`Não foi possível remover a fotografia do prato ${id}.`);
+    }
+  }
+}
