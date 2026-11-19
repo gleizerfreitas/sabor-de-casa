@@ -15,12 +15,15 @@ export async function saveCategory(id: string | null, formData: FormData) {
     const { name } = categorySchema.parse({ name: formData.get("name") });
     const supabase = await createSupabaseServerClient();
     const category = id ? await updateCategory(supabase, id, name) : await createCategory(supabase, name);
-    revalidatePath("/admin"); return { ok: true as const, category };
+    revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath("/pedido");
+    return { ok: true as const, category };
   } catch (error) { return fail(error); }
 }
 
 export async function removeCategory(id: string) {
-  try { await requireAdmin(); await deleteCategory(await createSupabaseServerClient(), id); revalidatePath("/admin"); return { ok: true as const }; }
+  try { await requireAdmin(); await deleteCategory(await createSupabaseServerClient(), id); revalidatePath("/admin"); revalidatePath("/"); revalidatePath("/pedido"); return { ok: true as const }; }
   catch (error) { return fail(error); }
 }
 
@@ -47,7 +50,10 @@ export async function saveDish(id: string | null, formData: FormData) {
     const result = id ? await supabase.from("dishes").update(values).eq("id", id) : await supabase.from("dishes").insert({ ...values, photo_url: photoUrl ?? "" });
     if (result.error) throw result.error;
     persisted = true;
-    revalidatePath("/admin"); return { ok: true as const };
+    revalidatePath("/admin");
+    revalidatePath("/");
+    revalidatePath("/pedido");
+    return { ok: true as const };
   } catch (error) {
     if (uploadedPath && !persisted && supabase) {
       try {
