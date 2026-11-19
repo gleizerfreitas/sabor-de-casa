@@ -6,6 +6,14 @@ import type { CatalogData, Category, Dish } from "@/src/types/catalog";
 import { removeCategory, removeDish, saveCategory } from "@/src/app-actions/catalog";
 
 export function AdminCatalog({ data }: { data: CatalogData }) {
+  const catalogRevision = JSON.stringify([
+    data.categories.map(({ id, updated_at }) => [id, updated_at]),
+    data.dishes.map(({ id, updated_at }) => [id, updated_at]),
+  ]);
+  return <AdminCatalogContent key={catalogRevision} data={data} />;
+}
+
+function AdminCatalogContent({ data }: { data: CatalogData }) {
   const [categories, setCategories] = useState(data.categories);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Category | "new" | null>(null);

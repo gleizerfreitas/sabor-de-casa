@@ -65,6 +65,7 @@ export async function saveDish(id: string | null, formData: FormData) {
     if (result.error) throw result.error;
     persisted = true;
     revalidatePath("/admin");
+    revalidatePath("/admin/catalogo");
     revalidatePath("/");
     revalidatePath("/pedido");
     return { ok: true as const };
