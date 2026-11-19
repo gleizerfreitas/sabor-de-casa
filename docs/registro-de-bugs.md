@@ -11,7 +11,8 @@ Falta o nome da Marmitaria Sabor de Casa (Deveria ser uma configuração?)
 Features
 
 1. Menu / Sidebar
-A sidebar/menu, em resoluções menores, deveria vir retraida e ser acionada por botão (menu hamburguer)
+A sidebar/menu, em resoluções menores, deveria vir retraida e ser acionada por botão (menu hamburguer) e incluir item da lista de navegagação com um link do catálogo publico/página inicial
 
-2. Pratos
-A funcionalidade EXCLUIR não foi implementada
+2. Corrigir a atualização do preço entre o editar prato e a visão da pag catálogo
+
+
