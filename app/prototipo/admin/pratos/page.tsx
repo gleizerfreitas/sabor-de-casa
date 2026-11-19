@@ -15,6 +15,7 @@ import {
   readCatalog,
   writeCatalog,
 } from "@/src/prototyping/catalog-storage";
+import { readMenus } from "@/src/prototyping/menu-storage";
 
 type CategoryDialogProps = {
   category?: Category;
@@ -114,6 +115,18 @@ export default function DishesPrototypePage() {
     setFeedback("Categoria excluída com sucesso.");
   }
 
+  function deleteDish(dish: Dish) {
+    if (readMenus().some((menu) => menu.dishIds.includes(dish.id))) {
+      setFeedback("Não é possível excluir um prato associado a cardápios.");
+      return;
+    }
+    if (!window.confirm(`Excluir o prato "${dish.name}"?`)) return;
+    const nextDishes = dishes.filter((item) => item.id !== dish.id);
+    setDishes(nextDishes);
+    writeCatalog(DISHES_STORAGE_KEY, nextDishes);
+    setFeedback("Prato excluído com sucesso.");
+  }
+
   return (
     <>
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
@@ -129,7 +142,7 @@ export default function DishesPrototypePage() {
         <div className="divide-y divide-stone-100">
           {groupedCategories.map(({ category, dishes: categoryDishes }) => <section key={category.id} className="p-5">
             <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-lg font-bold text-stone-900">{category.name}</h2><div className="flex gap-3"><button className="text-sm font-semibold text-orange-700" onClick={() => setDialog(category)}>Editar</button>{!dishes.some((dish) => dish.categoryId === category.id) && <button className="text-sm font-semibold text-red-600" onClick={() => deleteCategory(category)}>Excluir</button>}</div></div>
-            {categoryDishes.length === 0 ? <p className="rounded-xl bg-stone-50 px-4 py-5 text-sm text-stone-500">Nenhum prato cadastrado nesta categoria.</p> : <div className="divide-y divide-stone-100">{categoryDishes.map((dish) => <div className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0" key={dish.id}><div className="flex items-center gap-4"><div className={`size-12 rounded-xl bg-gradient-to-br ${dish.accent}`} /><div><p className="font-semibold text-stone-900">{dish.name}</p><p className="text-sm text-stone-500">{formatPrice(dish.price)} · {dish.available ? "Ativo" : "Indisponível"}</p></div></div><button className="text-sm font-semibold text-orange-700">Editar</button></div>)}</div>}
+            {categoryDishes.length === 0 ? <p className="rounded-xl bg-stone-50 px-4 py-5 text-sm text-stone-500">Nenhum prato cadastrado nesta categoria.</p> : <div className="divide-y divide-stone-100">{categoryDishes.map((dish) => <div className="flex items-center justify-between gap-4 py-4 first:pt-0 last:pb-0" key={dish.id}><div className="flex items-center gap-4"><div className={`size-12 rounded-xl bg-gradient-to-br ${dish.accent}`} /><div><p className="font-semibold text-stone-900">{dish.name}</p><p className="text-sm text-stone-500">{formatPrice(dish.price)} · {dish.available ? "Ativo" : "Indisponível"}</p></div></div><div className="flex gap-3"><button className="text-sm font-semibold text-orange-700">Editar</button><button className="text-sm font-semibold text-red-600" onClick={() => deleteDish(dish)}>Excluir</button></div></div>)}</div>}
           </section>)}
         </div>
       </div>
