@@ -134,9 +134,6 @@ export async function apiUpdateSettings(input: {
   }
 }
 
-// Adicionar POST/PUT para pratos quando upload estiver pronto
-// export async function apiCreateDish(formData: FormData) { ... }
-// export async function apiUpdateDish(id: string, formData: FormData) { ... }
 
 // Cardápios
 export async function apiGetDailyMenu(id: string) {
@@ -179,3 +176,38 @@ export async function apiDeleteDailyMenu(id: string) {
 //     throw new ApiError(response.status, json.error?.code, json.error?.message);
 //   }
 // }
+// Pratos (FormData)
+export async function apiCreateDish(formData: FormData) {
+  const response = await fetch("/api/pratos", {
+    method: "POST",
+    body: formData,
+  });
+  return handleApiResponse(response);
+}
+
+export async function apiUpdateDish(id: string, formData: FormData) {
+  const response = await fetch(`/api/pratos/${id}`, {
+    method: "PUT",
+    body: formData,
+  });
+  return handleApiResponse(response);
+}
+
+// Menu Operations
+export async function apiCreateDailyMenu(menuDate: string, dishIds: string[]) {
+  const response = await fetch("/api/cardapios", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ date: menuDate, dishIds }),
+  });
+  return handleApiResponse(response);
+}
+
+export async function apiUpdateDailyMenu(id: string, menuDate: string, dishIds: string[]) {
+  const response = await fetch(`/api/cardapios/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ date: menuDate, dishIds }),
+  });
+  return handleApiResponse(response);
+}

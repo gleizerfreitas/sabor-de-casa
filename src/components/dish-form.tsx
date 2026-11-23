@@ -3,7 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import type { Category, Dish } from "@/src/types/catalog";
-import { saveDish } from "@/src/app-actions/catalog";
+import { apiCreateDish, apiUpdateDish, ApiError } from "@/src/lib/api-client";
 
 export function DishForm({ categories, dish }: { categories: Category[]; dish?: Dish }) {
   const pathname = usePathname();
@@ -13,18 +13,30 @@ export function DishForm({ categories, dish }: { categories: Category[]; dish?: 
 function DishFormState({ categories, dish }: { categories: Category[]; dish?: Dish }) {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    
-    // Usar Server Action por enquanto (upload requer refatoração)
-    // TODO: Migrar para apiCreateDish/apiUpdateDish quando endpoint POST/PUT estiver pronto
-    const result = await saveDish(dish?.id ?? null, new FormData(event.currentTarget));
-    if (!result.ok) {
-      setError(result.error);
-    } else {
+    setSaving(true);
+
+    try {
+      const formData = new FormData(event.currentTarget);
+      formData.set("isActive", formData.get("isActive") ? "true" : "false");
+
+      if (dish) {
+        await apiUpdateDish(dish.id, formData);
+      } else {
+        await apiCreateDish(formData);
+      }
+
       setSaved(true);
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Não foi possível salvar o prato."
+      );
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -103,14 +115,16 @@ function DishFormState({ categories, dish }: { categories: Category[]; dish?: Di
           </span>
         </label>
         <label className="flex gap-2">
-          <input name="isActive" type="checkbox" value="true" defaultChecked={dish?.is_active ?? true} /> Ativo
+          <input name="isActive" type="checkbox" defaultChecked={dish?.is_active ?? true} /> Ativo
         </label>
         {error && (
           <p role="alert" className="text-sm font-semibold text-red-600">
             {error}
           </p>
         )}
-        <button className="rounded-xl bg-orange-600 px-5 py-3 font-bold text-white">Salvar prato</button>
+        <button disabled={saving} className="rounded-xl bg-orange-600 px-5 py-3 font-bold text-white disabled:opacity-60">
+          {saving ? "Salvando..." : "Salvar prato"}
+        </button>
       </form>
     </div>
   );
