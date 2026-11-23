@@ -133,3 +133,49 @@ export async function apiUpdateSettings(input: {
     throw new ApiError(response.status, error.code || "UNKNOWN_ERROR", error.message || "Erro desconhecido");
   }
 }
+
+// Adicionar POST/PUT para pratos quando upload estiver pronto
+// export async function apiCreateDish(formData: FormData) { ... }
+// export async function apiUpdateDish(id: string, formData: FormData) { ... }
+
+// Cardápios
+export async function apiGetDailyMenu(id: string) {
+  const response = await fetch(`/api/cardapios/${id}`);
+  return handleApiResponse(response);
+}
+
+export async function apiDeleteDailyMenu(id: string) {
+  const response = await fetch(`/api/cardapios/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    const json = await response.json();
+    const error = json.error || {};
+    throw new ApiError(response.status, error.code || "UNKNOWN_ERROR", error.message || "Erro desconhecido");
+  }
+}
+
+// export async function apiCreateDailyMenu(date: string, dishIds: string[]) { ... }
+// export async function apiUpdateDailyMenu(id: string, ...) { ... }
+
+// Menu Operations (placeholders - endpoints a ser implementados)
+// export async function apiCreateDailyMenu(date: string, dishIds: string[]) {
+//   const response = await fetch("/api/cardapios", {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify({ menuDate: date, dishIds }),
+//   });
+//   return handleApiResponse(response);
+// }
+
+// export async function apiPublishMenu(id: string) {
+//   const response = await fetch(`/api/cardapios/${id}/publicar`, {
+//     method: "PATCH",
+//     headers: { "Content-Type": "application/json" },
+//   });
+//   if (!response.ok) {
+//     const json = await response.json();
+//     throw new ApiError(response.status, json.error?.code, json.error?.message);
+//   }
+// }
