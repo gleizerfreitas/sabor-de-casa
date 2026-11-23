@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Category, Dish } from "@/src/types/catalog";
 import type { DailyMenu } from "@/src/types/menu";
 import type { BusinessDay } from "@/src/types/settings";
-import { saveMenu } from "@/src/app-actions/menu";
+import { apiCreateDailyMenu, apiUpdateDailyMenu, ApiError } from "@/src/lib/api-client";
 
 function todayIso() {
   const date = new Date();
@@ -49,6 +49,7 @@ function AdminMenuFormState({
   const [selectedDishIds, setSelectedDishIds] = useState<string[]>(menu?.items.map((item) => item.dish_id) ?? []);
   const [error, setError] = useState("");
   const [minimumDate, setMinimumDate] = useState("");
+  const [saving, setSaving] = useState(false);
   const selected = useMemo(() => new Set(selectedDishIds), [selectedDishIds]);
   const openDaySet = useMemo(() => new Set(openDays), [openDays]);
 
@@ -75,18 +76,33 @@ function AdminMenuFormState({
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    
     if (!date) {
       setError("Informe a data do cardápio.");
       return;
     }
+    
     const weekday = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"][new Date(`${date}T12:00:00Z`).getUTCDay()] as BusinessDay;
     if (!openDaySet.has(weekday)) {
       setError("A data escolhida está em um dia sem funcionamento configurado.");
       return;
     }
-    const result = await saveMenu(menu?.id ?? null, new FormData(event.currentTarget));
-    if (!result.ok) setError(result.error);
-    else onSaved();
+
+    setSaving(true);
+    try {
+      if (menu) {
+        await apiUpdateDailyMenu(menu.id, date, selectedDishIds);
+      } else {
+        await apiCreateDailyMenu(date, selectedDishIds);
+      }
+      onSaved();
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Não foi possível salvar o cardápio."
+      );
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (
@@ -133,7 +149,7 @@ function AdminMenuFormState({
 
         <div className="flex flex-wrap justify-end gap-3">
           <Link href="/admin/cardapios" className="rounded-xl border border-stone-300 px-5 py-3 text-sm font-semibold text-stone-700">Cancelar</Link>
-          <button type="submit" className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white">{menu?.status === "PUBLICADO" ? "Salvar" : "Salvar como rascunho"}</button>
+          <button type="submit" disabled={saving} className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white disabled:opacity-60">{saving ? "Salvando..." : (menu?.status === "PUBLICADO" ? "Salvar" : "Salvar como rascunho")}</button>
         </div>
       </form>
     </div>

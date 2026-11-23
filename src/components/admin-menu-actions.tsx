@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { publishMenu, removeMenu } from "@/src/app-actions/menu";
+import { apiPublishDailyMenu, apiDeleteDailyMenu, ApiError } from "@/src/lib/api-client";
 
 export function AdminMenuActions({
   id,
@@ -18,20 +18,31 @@ export function AdminMenuActions({
   async function publish() {
     setWorking(true);
     setError("");
-    const result = await publishMenu(id);
-    if (!result.ok) setError(result.error);
-    setWorking(false);
-    if (result.ok && onPublished) onPublished();
+    try {
+      await apiPublishDailyMenu(id);
+      if (onPublished) onPublished();
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Não foi possível publicar o cardápio."
+      );
+    } finally {
+      setWorking(false);
+    }
   }
 
   async function remove() {
     if (!window.confirm("Excluir este cardápio? Essa operação não pode ser desfeita.")) return;
     setWorking(true);
     setError("");
-    const result = await removeMenu(id);
-    setWorking(false);
-    if (!result.ok) setError(result.error);
-    else onRemoved();
+    try {
+      await apiDeleteDailyMenu(id);
+      onRemoved();
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Não foi possível excluir o cardápio."
+      );
+      setWorking(false);
+    }
   }
 
   return (

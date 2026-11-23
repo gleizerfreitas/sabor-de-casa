@@ -211,3 +211,16 @@ export async function apiUpdateDailyMenu(id: string, menuDate: string, dishIds: 
   });
   return handleApiResponse(response);
 }
+
+export async function apiPublishDailyMenu(id: string) {
+  const response = await fetch(`/api/cardapios/${id}/publicar`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    const json = await response.json();
+    const error = json.error || {};
+    throw new ApiError(response.status, error.code || "UNKNOWN_ERROR", error.message || "Erro desconhecido");
+  }
+}
