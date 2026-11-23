@@ -111,3 +111,68 @@ tests/               testes unitários, integração e E2E
 Múltiplos administradores, arquivamento de pratos, preços congelados por
 cardápio, persistência de pedidos e reserva de disponibilidade são extensões
 possíveis, mas não devem ser antecipadas no esquema inicial do MVP.
+## API HTTP REST (v0.2.0+)
+
+A partir da versão 0.2.0, o sistema expõe uma **API HTTP REST** interna para gerenciamento do catálogo, cardápios e configurações. Os Route Handlers do Next.js (em `app/api/**`) implementam esta interface.
+
+### Padrão
+
+**Autenticação**: Todos os endpoints administrativos exigem autenticação via Supabase Auth (cookie de sessão).
+
+**Resposta de sucesso**:
+```json
+{ "data": { /* Entidade ou array */ } }
+```
+
+**Resposta de erro**:
+```json
+{ "error": { "code": "ERROR_CODE", "message": "...", "details": {...} } }
+```
+
+### Endpoints
+
+#### Categorias (`/api/categorias`)
+- `GET` → Listar categorias
+- `POST` → Criar categoria
+- `PUT /{id}` → Atualizar categoria
+- `DELETE /{id}` → Excluir categoria
+
+#### Pratos (`/api/pratos`)
+- `GET` → Listar pratos
+- `DELETE /{id}` → Excluir prato
+
+#### Cardápios (`/api/cardapios`)
+- `GET` → Listar cardápios
+- `GET /hoje-resumo` → Resumo de hoje
+- `GET /{id}/disponibilidade` → Disponibilidade de hoje
+- `PATCH /{id}/disponibilidade/items` → Atualizar disponibilidade de item
+
+#### Configurações (`/api/configuracoes`)
+- `GET` → Obter configurações
+- `PUT` → Atualizar configurações
+
+**Veja** `docs/api-reference.md` para exemplos completos com curl, Postman, estruturas de request/response.
+
+### Mapeamento de Erros de Domínio
+
+A camada de API mapeia exceções de domínio (definidas em `src/server/services/domain-errors.ts`) para HTTP status:
+
+| Exceção | Status | Código |
+|---------|--------|--------|
+| `DuplicateResourceError` | 409 | `DUPLICATE_RESOURCE` |
+| `InvalidOperationError` | 409 | `INVALID_OPERATION` |
+| `ResourceNotFoundError` | 404 | `NOT_FOUND` |
+| `ValidationError` | 400 | `VALIDATION_ERROR` |
+| `AuthenticationRequiredError` | 401 | `UNAUTHENTICATED` |
+| `AdminAuthorizationError` | 403 | `FORBIDDEN` |
+
+Exemplos:
+- Tentar criar categoria duplicada → `409 DUPLICATE_RESOURCE`
+- Deletar categoria com pratos → `409 INVALID_OPERATION`
+- Prato inexistente → `404 NOT_FOUND`
+- Sem sessão autenticada → `401 UNAUTHENTICATED`
+
+### Integração na UI
+
+A interface administrativa (Fase 2) consome esta API via fetch wrappers em `src/lib/api-client.ts`, em vez de chamar Server Actions diretamente.
+
