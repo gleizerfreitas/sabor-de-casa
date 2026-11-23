@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { TodayMenuAvailabilityItem } from "@/src/server/services/menu-service";
-import { setMenuAvailability } from "@/src/app-actions/menu";
+import { apiSetMenuItemAvailability, ApiError } from "@/src/lib/api-client";
 
 export function AdminMenuAvailability({
   menuId,
@@ -21,11 +21,14 @@ export function AdminMenuAvailability({
     setError("");
     const previousAvailable = item.available;
     setItems((current) => current.map((currentItem) => currentItem.dish_id === item.dish_id ? { ...currentItem, available: !previousAvailable } : currentItem));
-    const result = await setMenuAvailability(menuId, item.dish_id, !previousAvailable);
-    setSavingDishId("");
-    if (!result.ok) {
+    
+    try {
+      await apiSetMenuItemAvailability(menuId, item.dish_id, !previousAvailable);
+    } catch (err) {
       setItems((current) => current.map((currentItem) => currentItem.dish_id === item.dish_id ? { ...currentItem, available: previousAvailable } : currentItem));
-      setError(result.error);
+      setError(err instanceof ApiError ? err.message : "Não foi possível atualizar a disponibilidade.");
+    } finally {
+      setSavingDishId("");
     }
   }
 

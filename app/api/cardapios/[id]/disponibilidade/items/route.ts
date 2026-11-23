@@ -11,36 +11,18 @@ const updateAvailabilitySchema = z.object({
   available: z.boolean(),
 });
 
-/**
- * PATCH /api/cardapios/{id}/disponibilidade/items
- * 
- * Atualiza a disponibilidade de um prato no cardápio de hoje.
- * Requer autenticação administrativa.
- * Só funciona para o cardápio da data atual e status PUBLICADO.
- * 
- * Request body:
- * { "dishId": "uuid", "available": true }
- * 
- * Resposta de sucesso (200):
- * { "data": null }
- * 
- * Erros possíveis:
- * - 400: Dados inválidos
- * - 401: Não autenticado
- * - 403: Sem permissão
- * - 409: Cardápio não é de hoje ou não foi publicado
- */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     await requireApiAdmin();
     const body = await request.json();
     const { dishId, available } = updateAvailabilitySchema.parse(body);
+    const { id } = await params;
     
     const supabase = await createSupabaseServerClient();
-    await setMenuItemAvailability(supabase, params.id, dishId, available);
+    await setMenuItemAvailability(supabase, id, dishId, available);
     return successResponse(null);
   } catch (error) {
     const { status, body } = mapErrorToApiResponse(error);

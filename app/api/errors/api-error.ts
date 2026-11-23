@@ -67,13 +67,10 @@ export function mapErrorToApiResponse(error: unknown): {
   }
 
   if (error instanceof ZodError) {
-    const details = error.errors.reduce(
-      (acc, err) => ({
-        ...acc,
-        [err.path.join(".")]: err.message,
-      }),
-      {},
-    );
+    const details: Record<string, string> = {};
+    for (const err of (error as ZodError).issues) {
+      details[err.path.join(".")] = err.message;
+    }
     return {
       status: 400,
       body: { error: { code: "VALIDATION_ERROR", message: "Dados inválidos", details } },
