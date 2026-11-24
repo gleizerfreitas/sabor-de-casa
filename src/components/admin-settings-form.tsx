@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { saveAdminSettings } from "@/src/app-actions/settings";
+import { apiUpdateSettings, ApiError } from "@/src/lib/api-client";
 import type { AdminSettings, BusinessHour } from "@/src/types/settings";
 
 const labels: Record<BusinessHour["day_of_week"], string> = {
@@ -30,18 +30,28 @@ export function AdminSettingsForm({ settings }: { settings: AdminSettings }) {
     event.preventDefault();
     setSaving(true);
     setFeedback(null);
-    const formData = new FormData(event.currentTarget);
-    formData.set("hours", JSON.stringify(hours.map((hour) => ({
-      dayOfWeek: hour.day_of_week,
-      isOpen: hour.is_open,
-      openingTime: hour.is_open ? hour.opening_time : null,
-      closingTime: hour.is_open ? hour.closing_time : null,
-    }))));
-    const result = await saveAdminSettings(formData);
-    setSaving(false);
-    setFeedback(result.ok
-      ? { type: "success", text: "Configurações salvas com sucesso." }
-      : { type: "error", text: result.error });
+    
+    try {
+      await apiUpdateSettings({
+        ownerName,
+        whatsapp,
+        timezone: settings.timezone,
+        businessHours: hours.map((hour) => ({
+          day_of_week: hour.day_of_week,
+          is_open: hour.is_open,
+          opening_time: hour.is_open ? hour.opening_time : null,
+          closing_time: hour.is_open ? hour.closing_time : null,
+        })),
+      });
+      setFeedback({ type: "success", text: "Configurações salvas com sucesso." });
+    } catch (error) {
+      setFeedback({
+        type: "error",
+        text: error instanceof ApiError ? error.message : "Não foi possível salvar as configurações.",
+      });
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (

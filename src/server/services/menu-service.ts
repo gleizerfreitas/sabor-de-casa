@@ -1,5 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { DailyMenu } from "@/src/types/menu";
+import { InvalidOperationError } from "./domain-errors";
 
 type MenuSummary = {
   id: string;
@@ -130,7 +131,7 @@ export async function saveDailyMenu(
     p_dish_ids: dishIds,
   });
   if (result.error) {
-    if (result.error.code === "23505") throw new Error("Já existe um cardápio para essa data.");
+    if (result.error.code === "23505") throw new InvalidOperationError("Já existe um cardápio para essa data.");
     throw new Error(result.error.message || "Não foi possível salvar o cardápio.");
   }
   return result.data;
@@ -178,7 +179,7 @@ export async function getTodayMenuAvailability(supabase: SupabaseClient, menuId:
   if (menu.error) throw new Error(`Não foi possível carregar o cardápio: ${menu.error.message}`);
   if (!menu.data) return null;
   if (menu.data.menu_date !== today || menu.data.status !== "PUBLICADO") {
-    throw new Error("A disponibilidade só pode ser gerenciada para o cardápio publicado do dia.");
+    throw new InvalidOperationError("A disponibilidade só pode ser gerenciada para o cardápio publicado do dia.");
   }
 
   const items = await supabase

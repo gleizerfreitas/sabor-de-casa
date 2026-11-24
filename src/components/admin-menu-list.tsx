@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { DailyMenu } from "@/src/types/menu";
 import { AdminMenuActions } from "@/src/components/admin-menu-actions";
-import { removePastMenus } from "@/src/app-actions/menu";
+import { apiRemovePastMenus, ApiError } from "@/src/lib/api-client";
 
 function formatMenuDate(date: string) {
   return new Intl.DateTimeFormat("pt-BR", {
@@ -34,10 +34,16 @@ export function AdminMenuList({ initialMenus, initialPastMenuCount }: { initialM
     if (!window.confirm(`Excluir os ${pastMenuCount} cardápios passados? Essa operação não pode ser desfeita.`)) return;
     setWorking(true);
     setError("");
-    const result = await removePastMenus();
-    setWorking(false);
-    if (!result.ok) setError(result.error);
-    else setPastMenuCount(0);
+    try {
+      await apiRemovePastMenus();
+      setPastMenuCount(0);
+    } catch (err) {
+      setError(
+        err instanceof ApiError ? err.message : "Não foi possível excluir os cardápios passados."
+      );
+    } finally {
+      setWorking(false);
+    }
   }
 
   return (

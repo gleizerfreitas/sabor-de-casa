@@ -1,8 +1,5 @@
 import { Suspense } from "react";
-import { connection } from "next/server";
-import { createSupabaseServerClient } from "@/src/lib/supabase/server";
-import { getPublicMenu } from "@/src/server/services/public-menu-service";
-import { OrderReview } from "@/src/components/order-review";
+import { OrderReviewLoader } from "@/src/components/order-review-loader";
 
 type PedidoPageProps = {
   searchParams: Promise<{ itens?: string }>;
@@ -11,17 +8,8 @@ type PedidoPageProps = {
 export const instant = false;
 
 async function PedidoContent({ searchParams }: PedidoPageProps) {
-  await connection();
   const params = await searchParams;
-  const menu = await getPublicMenu(await createSupabaseServerClient());
-
-  return (
-    <OrderReview
-      key={params.itens ?? ""}
-      menu={menu}
-      serializedOrder={params.itens ?? ""}
-    />
-  );
+  return <OrderReviewLoader serializedOrder={params.itens ?? ""} />;
 }
 
 export default function PedidoPage({ searchParams }: PedidoPageProps) {

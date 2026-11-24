@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { CatalogData, Category, Dish } from "@/src/types/catalog";
-import { removeCategory, removeDish, saveCategory } from "@/src/app-actions/catalog";
+import { apiCreateCategory, apiUpdateCategory, apiDeleteCategory, apiDeleteDish, ApiError } from "@/src/lib/api-client";
 
 export function AdminCatalog({ data }: { data: CatalogData }) {
   const catalogRevision = JSON.stringify([
@@ -14,31 +14,63 @@ export function AdminCatalog({ data }: { data: CatalogData }) {
 }
 
 function AdminCatalogContent({ data }: { data: CatalogData }) {
-  const [categories, setCategories] = useState(data.categories);
+  const [categories, setCategories] = useState<Category[]>(data.categories);
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<Category | "new" | null>(null);
   const [feedback, setFeedback] = useState("");
-  const [dishes, setDishes] = useState(data.dishes);
+  const [dishes, setDishes] = useState<Dish[]>(data.dishes);
   const visible = (category: Category) => dishes.filter((dish) => dish.category_id === category.id && dish.name.toLowerCase().includes(search.toLowerCase()));
+  
   async function categorySubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const result = await saveCategory(editing !== "new" && editing ? editing.id : null, new FormData(event.currentTarget));
-    if (!result.ok) { setFeedback(result.error); return; }
-    setCategories((current) => editing === "new" ? [...current, result.category] : current.map((item) => item.id === (editing as Category).id ? result.category : item));
-    setEditing(null); setFeedback("Categoria salva com sucesso.");
+    try {
+      const formData = new FormData(event.currentTarget);
+      const name = formData.get("name") as string;
+      
+      const category = editing === "new"
+        ? await apiCreateCategory(name)
+        : await apiUpdateCategory((editing as Category).id, name);
+      
+      setCategories((current) => 
+        editing === "new"
+          ? [...current, category as Category]
+          : current.map((item) => item.id === (editing as Category).id ? (category as Category) : item)
+      );
+      setEditing(null);
+      setFeedback("Categoria salva com sucesso.");
+    } catch (error) {
+      setFeedback(
+        error instanceof ApiError ? error.message : "Não foi possível salvar a categoria."
+      );
+    }
   }
+
   async function remove(category: Category) {
     if (!window.confirm(`Excluir a categoria "${category.name}"?`)) return;
-    const result = await removeCategory(category.id);
-    setFeedback(result.ok ? "Categoria excluída com sucesso." : result.error);
-    if (result.ok) setCategories((current) => current.filter((item) => item.id !== category.id));
+    try {
+      await apiDeleteCategory(category.id);
+      setCategories((current) => current.filter((item) => item.id !== category.id));
+      setFeedback("Categoria excluída com sucesso.");
+    } catch (error) {
+      setFeedback(
+        error instanceof ApiError ? error.message : "Não foi possível excluir a categoria."
+      );
+    }
   }
+
   async function removeSelectedDish(dish: Dish) {
     if (!window.confirm(`Excluir o prato "${dish.name}"?`)) return;
-    const result = await removeDish(dish.id);
-    setFeedback(result.ok ? "Prato excluído com sucesso." : result.error);
-    if (result.ok) setDishes((current) => current.filter((item) => item.id !== dish.id));
+    try {
+      await apiDeleteDish(dish.id);
+      setDishes((current) => current.filter((item) => item.id !== dish.id));
+      setFeedback("Prato excluído com sucesso.");
+    } catch (error) {
+      setFeedback(
+        error instanceof ApiError ? error.message : "Não foi possível excluir o prato."
+      );
+    }
   }
+
   return <div>
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-sm font-semibold uppercase tracking-[0.18em] text-orange-700">Catálogo</p><h1 className="mt-2 text-3xl font-bold text-stone-900">Pratos e categorias</h1><p className="mt-2 text-stone-500">Gerencie os pratos que podem entrar nos cardápios.</p></div><div className="flex flex-wrap gap-2"><button onClick={() => setEditing("new")} className="rounded-xl border border-orange-600 px-4 py-3 text-sm font-bold text-orange-700">+ Nova categoria</button><Link href="/admin/pratos/novo" className="rounded-xl bg-orange-600 px-4 py-3 text-sm font-bold text-white">+ Novo prato</Link></div></div>
     {feedback && <p role="status" className="mt-5 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700">{feedback}</p>}
